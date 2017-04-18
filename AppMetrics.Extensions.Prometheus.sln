@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "visualization", "visualizat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana-dashboards", "grafana-dashboards", "{44E50731-4AE5-456F-A84C-CE3C4C977097}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppMetrics.Extensions.Reporting.Prometheus", "src\AppMetrics.Extensions.Reporting.Prometheus\AppMetrics.Extensions.Reporting.Prometheus.csproj", "{EE829DAF-ABB8-456C-B692-2354217C59E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Reporting.Prometheus", "src\AppMetrics.Extensions.Reporting.Prometheus\App.Metrics.Extensions.Reporting.Prometheus.csproj", "{EE829DAF-ABB8-456C-B692-2354217C59E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Prometheus", "src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj", "{1DED33F4-95EC-44E2-BCE8-09730375333C}"
 EndProject
