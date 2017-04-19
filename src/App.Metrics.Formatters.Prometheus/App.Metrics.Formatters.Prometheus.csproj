@@ -7,7 +7,7 @@
     <Copyright>Allan Hardy 2016</Copyright>
     <AssemblyTitle>App.Metrics.Extensions.Reporting.Prometheus</AssemblyTitle>
     <Authors>Allan Hardy;Sergii Kryvonos</Authors>
-    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <TargetFramework>netstandard1.6</TargetFramework>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -18,7 +18,7 @@
     <PackageProjectUrl>https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/alhardy/AppMetrics.Extensions.Prometheus/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>Prometheus</RepositoryUrl>    
+    <RepositoryUrl>Prometheus</RepositoryUrl>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
@@ -36,14 +36,6 @@
     <DocumentationFile>bin\Debug\netstandard1.6\App.Metrics.Extensions.Reporting.Prometheus.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net452|AnyCPU'">
-    <DocumentationFile>bin\Release\net452\App.Metrics.Extensions.Reporting.Prometheus.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net452|AnyCPU'">
-    <DocumentationFile>bin\Debug\net452\App.Metrics.Extensions.Reporting.Prometheus.xml</DocumentationFile>
-  </PropertyGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
@@ -51,18 +43,11 @@
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="1.1.0-alpha" />
     <PackageReference Include="App.Metrics.Concurrency" Version="1.1.0-alpha" />
+    <PackageReference Include="App.Metrics.Extensions.Middleware" Version="1.1.0-alpha" />
+    <PackageReference Include="protobuf-net" Version="2.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>$(DefineConstants);CLASSIC</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>
