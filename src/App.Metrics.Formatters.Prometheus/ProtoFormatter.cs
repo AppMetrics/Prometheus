@@ -5,16 +5,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using App.Metrics.Extensions.Prometheus.DataContracts;
 using ProtoBuf;
 
-namespace App.Metrics.Extensions.Reporting.Prometheus
+namespace App.Metrics.Formatters.Prometheus
 {
-    internal class ProtoFormatter
+    internal static class ProtoFormatter
     {
         public static byte[] Format(IEnumerable<MetricFamily> metrics)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
+            using (var memoryStream = new MemoryStream())
             {
                 Format(memoryStream, metrics);
                 return memoryStream.ToArray();

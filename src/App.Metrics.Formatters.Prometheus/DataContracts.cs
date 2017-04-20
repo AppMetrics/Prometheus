@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 // Generated from: prometheus.proto
-namespace App.Metrics.Extensions.Prometheus.DataContracts
+namespace App.Metrics.Formatters.Prometheus
 {
   [global::ProtoBuf.ProtoContract(Name=@"LabelPair")]
   public partial class LabelPair : global::ProtoBuf.IExtensible

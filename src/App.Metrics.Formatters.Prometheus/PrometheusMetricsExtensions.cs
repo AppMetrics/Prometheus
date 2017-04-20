@@ -7,17 +7,18 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using App.Metrics.Core;
 using App.Metrics.Counter;
-using App.Metrics.Extensions.Prometheus.DataContracts;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
 using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
-namespace App.Metrics.Extensions.Reporting.Prometheus
+namespace App.Metrics.Formatters.Prometheus
 {
     public static class PrometheusMetricsExtensions
     {
+        private static readonly Regex Rgx = new Regex("[^a-z0-9A-Z:_]");
+
         public static IEnumerable<MetricFamily> GetPrometheusMetricsSnapshot(this MetricsDataValueSource snapshot)
         {
             var result = new List<MetricFamily>();
@@ -29,7 +30,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = FormatName($"{group.Context}_{metricGroup.Key}"),
-                                               type = Extensions.Prometheus.DataContracts.MetricType.GAUGE
+                                               type = MetricType.GAUGE
                                            };
                     foreach (var metric in metricGroup)
                     {
@@ -45,7 +46,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = FormatName($"{group.Context}_{metricGroup.Key}"),
-                                               type = Extensions.Prometheus.DataContracts.MetricType.GAUGE
+                                               type = MetricType.GAUGE
                                            };
 
                     foreach (var metric in metricGroup)
@@ -62,7 +63,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = FormatName($"{group.Context}_{metricGroup.Key}_total"),
-                                               type = Extensions.Prometheus.DataContracts.MetricType.COUNTER
+                                               type = MetricType.COUNTER
                                            };
 
                     foreach (var metric in metricGroup)
@@ -79,7 +80,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = FormatName($"{group.Context}_{metricGroup.Key}"),
-                                               type = Extensions.Prometheus.DataContracts.MetricType.SUMMARY,
+                                               type = MetricType.SUMMARY,
                                            };
 
                     foreach (var timer in metricGroup)
@@ -96,7 +97,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                     var promMetricFamily = new MetricFamily
                                            {
                                                name = FormatName($"{group.Context}_{metricGroup.Key}"),
-                                               type = Extensions.Prometheus.DataContracts.MetricType.SUMMARY,
+                                               type = MetricType.SUMMARY,
                                            };
 
                     foreach (var timer in metricGroup)
@@ -122,13 +123,41 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
             return result;
         }
 
+        public static Metric ToPrometheusMetric(this CounterValue.SetItem item)
+        {
+            var result = new Metric()
+                         {
+                             gauge = new Gauge()
+                                     {
+                                         value = item.Count
+                                     },
+                             label = item.Tags.ToLabelPairs()
+                         };
+
+            return result;
+        }
+
+        public static Metric ToPrometheusMetric(this MeterValue.SetItem item)
+        {
+            var result = new Metric()
+                         {
+                             counter = new Counter()
+                                       {
+                                           value = item.Value.Count
+                                       },
+                             label = item.Tags.ToLabelPairs()
+                         };
+
+            return result;
+        }
+
         public static List<Metric> ToPrometheusMetrics(this GaugeValueSource metric)
         {
             var result = new List<Metric>
                          {
                              new Metric()
                              {
-                                 gauge = new Extensions.Prometheus.DataContracts.Gauge()
+                                 gauge = new Gauge()
                                          {
                                              value = metric.Value
                                          },
@@ -145,7 +174,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                          {
                              new Metric()
                              {
-                                 gauge = new Extensions.Prometheus.DataContracts.Gauge()
+                                 gauge = new Gauge()
                                          {
                                              value = metric.Value.Count
                                          },
@@ -161,27 +190,13 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
             return result;
         }
 
-        public static Metric ToPrometheusMetric(this CounterValue.SetItem item)
-        {
-            var result = new Metric()
-                         {
-                             gauge = new Extensions.Prometheus.DataContracts.Gauge()
-                                     {
-                                         value = item.Count
-                                     },
-                             label = item.Tags.ToLabelPairs()
-                         };
-
-            return result;
-        }
-
         public static List<Metric> ToPrometheusMetrics(this MeterValueSource metric)
         {
             var result = new List<Metric>
                          {
                              new Metric()
                              {
-                                 counter = new Extensions.Prometheus.DataContracts.Counter()
+                                 counter = new Counter()
                                            {
                                                value = metric.Value.Count
                                            },
@@ -193,20 +208,6 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
             {
                 result.AddRange(metric.Value.Items.Select(x => x.ToPrometheusMetric()));
             }
-
-            return result;
-        }
-
-        public static Metric ToPrometheusMetric(this MeterValue.SetItem item)
-        {
-            var result = new Metric()
-                         {
-                             counter = new Extensions.Prometheus.DataContracts.Counter()
-                                       {
-                                           value = item.Value.Count
-                                       },
-                             label = item.Tags.ToLabelPairs()
-                         };
 
             return result;
         }
@@ -271,7 +272,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
                          {
                              new Metric()
                              {
-                                 counter = new Extensions.Prometheus.DataContracts.Counter()
+                                 counter = new Counter()
                                            {
                                                value = metric.Value.Rate.Count
                                            },
@@ -286,8 +287,6 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
 
             return result;
         }
-
-        private static readonly Regex Rgx = new Regex("[^a-z0-9A-Z:_]");
 
         private static string FormatName(string name) { return Rgx.Replace(name, "_").ToLower(); }
     }

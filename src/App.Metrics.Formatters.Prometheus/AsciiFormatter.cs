@@ -7,11 +7,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using App.Metrics.Extensions.Prometheus.DataContracts;
 
-namespace App.Metrics.Extensions.Reporting.Prometheus
+namespace App.Metrics.Formatters.Prometheus
 {
-    internal class AsciiFormatter
+    internal static class AsciiFormatter
     {
         public static void Format(Stream destination, IEnumerable<MetricFamily> metrics)
         {
@@ -167,6 +166,7 @@ namespace App.Metrics.Extensions.Reporting.Prometheus
         private static string WithLabels(string familyName, IEnumerable<LabelPair> labels)
         {
             var labelPairs = labels as LabelPair[] ?? labels.ToArray();
+
             if (labelPairs.Length == 0)
             {
                 return familyName;

@@ -3,7 +3,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Provides Prometheus reporting capability to App Metrics</Description>
+    <Description>Formats metrics data for Prometheus - ASCII &amp; Protobuf</Description>
     <Copyright>Allan Hardy 2016</Copyright>
     <AssemblyTitle>App.Metrics.Extensions.Reporting.Prometheus</AssemblyTitle>
     <Authors>Allan Hardy;Sergii Kryvonos</Authors>
@@ -11,14 +11,14 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>App.Metrics.Extensions.Reporting.Prometheus</AssemblyName>
-    <PackageId>App.Metrics.Extensions.Reporting.Prometheus</PackageId>
+    <AssemblyName>App.Metrics.Formatters.Prometheus</AssemblyName>
+    <PackageId>App.Metrics.Formatters.Prometheus</PackageId>
     <PackageTags>Metrics;Monitoring;Instrumentation;Reporting;Prometheus</PackageTags>
     <PackageIconUrl>https://alhardy.github.io/app-metrics-docs/logo.png</PackageIconUrl>
     <PackageProjectUrl>https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/alhardy/AppMetrics.Extensions.Prometheus/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>Prometheus</RepositoryUrl>
+    <RepositoryUrl>git://github.com/alhardy/AppMetrics.Extensions.Prometheus.git</RepositoryUrl>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
@@ -26,6 +26,7 @@
     <CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
     <DebugType>full</DebugType>
     <VersionPrefix>1.0.0</VersionPrefix>
+    <RootNamespace>App.Metrics.Formatters.Prometheus</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">

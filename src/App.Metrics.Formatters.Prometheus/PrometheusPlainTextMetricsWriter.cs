@@ -8,15 +8,17 @@ using App.Metrics.Core;
 using App.Metrics.Extensions.Middleware.Abstractions;
 using Microsoft.AspNetCore.Http;
 
-namespace App.Metrics.Extensions.Reporting.Prometheus
+namespace App.Metrics.Formatters.Prometheus
 {
+    // ReSharper disable UnusedMember.Global
     public class PrometheusPlainTextMetricsWriter : IMetricsResponseWriter
+        // ReSharper restore UnusedMember.Global
     {
+        public string ContentType => "text/plain";
+
         public Task WriteAsync(HttpContext context, MetricsDataValueSource metricsData, CancellationToken token = default(CancellationToken))
         {
             return context.Response.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot()), token);
         }
-
-        public string ContentType => "text/plain";
     }
 }
