@@ -29,7 +29,7 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
-var packDirs                    = new [] { Directory("./src/App.Metrics.Extensions.Reporting.Prometheus"), Directory("./src/App.Metrics.Formatters.Prometheus") };
+var packDirs                    = new [] { Directory("./src/App.Metrics.Formatters.Prometheus") };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
