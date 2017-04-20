@@ -5,7 +5,7 @@
   <PropertyGroup>
     <Description>Formats metrics data for Prometheus - ASCII &amp; Protobuf</Description>
     <Copyright>Allan Hardy 2016</Copyright>
-    <AssemblyTitle>App.Metrics.Extensions.Reporting.Prometheus</AssemblyTitle>
+    <AssemblyTitle>App.Metrics.Formatters.Prometheus</AssemblyTitle>
     <Authors>Allan Hardy;Sergii Kryvonos</Authors>
     <TargetFramework>netstandard1.6</TargetFramework>
     <NoWarn>$(NoWarn);CS1591</NoWarn>

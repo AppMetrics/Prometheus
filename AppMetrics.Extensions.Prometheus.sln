@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 EndProject
@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.travis.yml = .travis.yml
 		AppMetrics.ruleset = AppMetrics.ruleset
 		appveyor.yml = appveyor.yml
+		global.json = global.json
 		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
@@ -40,6 +41,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Prom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Extensions.Reporting.Prometheus", "src\App.Metrics.Extensions.Reporting.Prometheus\App.Metrics.Extensions.Reporting.Prometheus.csproj", "{B60E0C36-D4C3-4DCD-9921-43B98F081857}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{A428EA40-E02B-4B19-9401-E9607C93E057}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Prometheus.Sandbox", "sandbox\App.Metrics.Prometheus.Sandbox\App.Metrics.Prometheus.Sandbox.csproj", "{31640008-3436-49E6-97C8-A2EA31C4F85C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +59,10 @@ Global
 		{B60E0C36-D4C3-4DCD-9921-43B98F081857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B60E0C36-D4C3-4DCD-9921-43B98F081857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B60E0C36-D4C3-4DCD-9921-43B98F081857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31640008-3436-49E6-97C8-A2EA31C4F85C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31640008-3436-49E6-97C8-A2EA31C4F85C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31640008-3436-49E6-97C8-A2EA31C4F85C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31640008-3436-49E6-97C8-A2EA31C4F85C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,5 +74,6 @@ Global
 		{44E50731-4AE5-456F-A84C-CE3C4C977097} = {5BC3B2AF-AFC7-4C92-BD1E-D347E83B2497}
 		{1DED33F4-95EC-44E2-BCE8-09730375333C} = {2D805782-756E-4C98-B22E-F502BEE95318}
 		{B60E0C36-D4C3-4DCD-9921-43B98F081857} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{31640008-3436-49E6-97C8-A2EA31C4F85C} = {A428EA40-E02B-4B19-9401-E9607C93E057}
 	EndGlobalSection
 EndGlobal
