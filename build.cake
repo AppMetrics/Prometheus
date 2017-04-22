@@ -8,6 +8,7 @@
 #tool "nuget:?package=ReSharperReports"
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
+#tool "nuget:?package=gitreleasemanager"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -19,12 +20,14 @@ var coverWith					= HasArgument("CoverWith") ? Argument<string>("CoverWith") :
                                   EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "OpenCover"; // None, DotCover, OpenCover
 var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	                              (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag) ? null :
+	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null) ? null :
                                   EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
 var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
                                   TravisCI.IsRunningOnTravisCI ? TravisCI.Environment.Build.BuildNumber :
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
+var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
+var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -72,6 +75,30 @@ Task("Clean")
 	CleanDirectory(testResultsDir);
 });
 
+Task("ReleaseNotes")
+    .IsDependentOn("Clean")    
+	.WithCriteria(() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag)
+    .Does(() =>
+{	
+	var preRelease = preReleaseSuffix != null;
+	var milestone = AppVeyor.Environment.Repository.Tag.Name;
+	var owner = AppVeyor.Environment.Repository.Name.Split('/')[0];
+	var repo = AppVeyor.Environment.Repository.Name.Split('/')[1];
+	var tag = AppVeyor.Environment.Repository.Tag.Name;
+
+	Context.Information("Creating release notes for Milestone " + milestone);
+	GitReleaseManagerCreate(gitUser, gitPassword, owner, repo, new GitReleaseManagerCreateSettings {
+		Milestone         = milestone,
+		Prerelease        = preRelease
+	});
+
+	Context.Information("Publishing Release Notes for Tag " + tag);
+	GitReleaseManagerPublish(gitUser, gitPassword, owner, repo, tag);
+
+	Context.Information("Closing Milestone " + milestone);
+	GitReleaseManagerClose(gitUser, gitPassword, owner, repo, milestone);
+});
+
 Task("Restore")
     .IsDependentOn("Clean")    
     .Does(() =>
@@ -81,12 +108,7 @@ Task("Restore")
         Sources = new [] { "https://api.nuget.org/v3/index.json", "https://www.myget.org/F/alhardy/api/v3/index.json" }	
     };
 
-	var projects = solution.GetProjects();
-
-	foreach(var project in projects)
-	{
-	    DotNetCoreRestore(project.Path.ToString(), settings);
-    }    
+	DotNetCoreRestore(solutionFile, settings);
 });
 
 Task("Build")    
@@ -97,9 +119,15 @@ Task("Build")
     
 	var settings = new DotNetCoreBuildSettings  { Configuration = configuration };
 
-    foreach(var project in projects)
-    {		
-		if (!IsRunningOnWindows())
+	if (IsRunningOnWindows())
+	{
+		DotNetCoreBuild(solutionFile, settings);
+	}
+	else
+	{
+		var projects = solution.GetProjects();
+
+		foreach(var project in projects)
         {
 			// Ignore Net452 on non-windows environments
 			if (project.Path.ToString().Contains("Net452"))
@@ -109,7 +137,7 @@ Task("Build")
 
 			var parsedProject = ParseProject(new FilePath(project.Path.ToString()), configuration);
 
-			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
+			if (parsedProject.IsLibrary() && !project.Path.ToString().Contains(".Sandbox")&& !project.Path.ToString().Contains(".Facts") && !project.Path.ToString().Contains(".Benchmarks"))
 			{				
 				settings.Framework = "netstandard1.6";				
 			}
@@ -119,7 +147,9 @@ Task("Build")
 			}
 
 			Context.Information("Building as " + settings.Framework + ": " +  project.Path.ToString());
-        }	 
+
+			DotNetCoreBuild(project.Path.ToString(), settings);
+		}
 
         DotNetCoreBuild(project.Path.ToString(), settings);
     }    
@@ -379,7 +409,8 @@ Task("AppVeyor")
     .IsDependentOn("Pack")
 	.IsDependentOn("HtmlCoverageReport")
 	.IsDependentOn("RunInspectCode")	
-    .IsDependentOn("PublishCoverage");
+    	.IsDependentOn("PublishCoverage")
+	.IsDependentOn("ReleaseNotes");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

@@ -6,6 +6,12 @@ environment:
   PreReleaseSuffix: alpha
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  GitUser:
+    secure: zAdAOUUof3XGDsdOBRYg7J7wZS44iL4VjI/MVGw+JnU=
+  GitOwner:
+    secure: n6W5JZ7Q/xfZC7b2k3+ORA==
+  GitPassword:
+    secure: G1CZ0EzJTYjH60jzYYaitkieeslue7VdeeVW4vYS+msXQ9gSCf7KstBKEbXdI+W2
 build_script:
 - ps: .\build.ps1 -Target AppVeyor
 test: off
