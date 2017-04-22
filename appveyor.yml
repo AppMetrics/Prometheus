@@ -11,7 +11,7 @@ environment:
   GitOwner:
     secure: n6W5JZ7Q/xfZC7b2k3+ORA==
   GitPassword:
-    secure: G1CZ0EzJTYjH60jzYYaitkieeslue7VdeeVW4vYS+msXQ9gSCf7KstBKEbXdI+W2
+    secure: fHangGPAk14u3V1eP3kg5EdekQoKdOsKC0F/A1mvh9IODHCZ92FGjfWb0U2aQ8bu
 build_script:
 - ps: .\build.ps1 -Target AppVeyor
 test: off
