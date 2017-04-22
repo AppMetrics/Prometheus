@@ -8,7 +8,6 @@
 
 |Package|Dev Release|Pre-Release|Release|
 |------|:--------:|:--------:|:--------:|
-|App.Metrics.Extensions.Reporting.Prometheus|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Extensions.Reporting.Prometheus.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Extensions.Reporting.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Extensions.Reporting.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Reporting.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Extensions.Reporting.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Reporting.Prometheus/)
 |App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Prometheus.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Reporting.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/AApp.Metrics.Formatters.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
 
 ## What is it?
