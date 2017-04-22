@@ -115,8 +115,6 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {	
-	var projects = solution.GetProjects();
-    
 	var settings = new DotNetCoreBuildSettings  { Configuration = configuration };
 
 	if (IsRunningOnWindows())
@@ -151,8 +149,7 @@ Task("Build")
 			DotNetCoreBuild(project.Path.ToString(), settings);
 		}
 
-        DotNetCoreBuild(project.Path.ToString(), settings);
-    }    
+	}
 });
 
 Task("Pack")
