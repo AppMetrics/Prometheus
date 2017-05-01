@@ -14,8 +14,8 @@
     <AssemblyName>App.Metrics.Formatters.Prometheus</AssemblyName>
     <PackageId>App.Metrics.Formatters.Prometheus</PackageId>
     <PackageTags>Metrics;Monitoring;Instrumentation;Reporting;Prometheus</PackageTags>
-    <PackageIconUrl>https://alhardy.github.io/app-metrics-docs/logo.png</PackageIconUrl>
-    <PackageProjectUrl>https://alhardy.github.io/app-metrics-docs/getting-started/reporting/index.html</PackageProjectUrl>
+    <PackageIconUrl>http://app-metrics.io/logo.png</PackageIconUrl>
+    <PackageProjectUrl>http://app-metrics.io/reporting/prometheus.html</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/alhardy/AppMetrics.Extensions.Prometheus/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git://github.com/alhardy/AppMetrics.Extensions.Prometheus.git</RepositoryUrl>
