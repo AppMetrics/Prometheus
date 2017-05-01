@@ -1,18 +1,20 @@
-# App Metrics Prometheus Extensions
-
-[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg)](https://alhardy.github.io/app-metrics-docs/getting-started/intro.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Coverage Status](https://coveralls.io/repos/github/alhardy/AppMetrics.Extensions.Prometheus/badge.svg?branch=master)](https://coveralls.io/github/alhardy/AppMetrics.Extensions.Prometheus?branch=master)
-
-|AppVeyor|Travis|
-|:--------:|:--------:|
-|[![Build status](https://ci.appveyor.com/api/projects/status/y9xmuw5q26yyvcnc?svg=true)](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/master)|[![Build status](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus.svg?branch=master)](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus?branch=master)|
-
-|Package|Dev Release|Pre-Release|Release|
-|------|:--------:|:--------:|:--------:|
-|App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Prometheus.svg)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Extensions.Reporting.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/AApp.Metrics.Formatters.Prometheus.svg)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
+# App Metrics Prometheus Extensions <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
+[![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/reporting/prometheus.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is it?
 
 The repo contains Prometheus extension packages to [App Metrics](https://github.com/alhardy/AppMetrics).
+
+## Latest Builds, Packages & Repo Stats
+
+|Branch|AppVeyor|Travis|Coverage|
+|------|:--------:|:--------:|:--------:|
+|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/appmetrics-extensions-prometheus/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics.Extensions.Prometheus/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics.Extensions.Prometheus/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics.Extensions.Prometheus?branch=dev)
+|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/appmetrics-extensions-prometheus/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/AppMetrics.Extensions.Prometheus/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus)| [![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics.Extensions.Prometheus/master.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics.Extensions.Prometheus?branch=master)|
+
+|Package|Dev Release|Pre-Release|Release|
+|------|:--------:|:--------:|:--------:|
+|App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
 
 #### Grafana/Prometheus Web Monitoring
 
