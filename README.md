@@ -18,19 +18,29 @@ The repo contains Prometheus extension packages to [App Metrics](https://github.
 
 #### Grafana/Prometheus Web Monitoring
 
-![Grafana/Prometheus Generic Web Dashboard Demo](#todo) *TODO*
+![Grafana/Prometheus Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
-> Grab the dashboard [here](##todo) *TODO*
-
-#### Grafana/Prometheus OAuth2 Client Monitoring on a Web API
-
-![Grafana/Prometheus Generic OAuth2 Web Dashboard Demo](#todo) *TODO*
-
-> Grab the dashboard [here](#todo) *TODO*
+> Grab the dashboard [here](https://grafana.com/dashboards/2204)
 
 ### Grafana/Prometheus Web Application Setup
 
-*TODO*
+- Download and install [Prometheus](https://prometheus.io/docs/introduction/getting_started/). *Runs well on Windows using* `Bash on Windows on Ubuntu`
+- Add a new scrape_config section to your `prometheus.yml` file
+
+```
+scrape_configs: 
+  - job_name: 'appmetrics'
+    
+    scrape_interval: 5s   
+
+    static_configs:
+      - targets: ['localhost:1111'] #change this to your hostname, defaults to '/metrics'
+```
+
+- Download and install [Grafana](https://grafana.com/grafana/download), then create a new [Prometheus Datasource](http://docs.grafana.org/features/datasources/prometheus/) pointing the the Database just created and [import](http://docs.grafana.org/reference/export_import/#importing-a-dashboard) App.Metrics [web dashboard](https://grafana.com/dashboards/2204)
+- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Formatters.Prometheus` nuget packages into your web application. 
+- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, instead of the JSON serialization add [Prometheus serialization](http://app-metrics.io/web-application-monitoring/formatters/prometheus-formatter.html). *You might want to check out the [Sandbox](https://github.com/alhardy/AppMetrics.Extensions.Prometheus/tree/dev/sandbox/App.Metrics.Prometheus.Sandbox) project if you get stuck*
+- Run your app and Grafana at visit `http://localhost:3000`
 
 ## How to build
 
