@@ -63,13 +63,18 @@ namespace App.Metrics.Sandbox
 
             var reportFilter = new DefaultMetricsFilter();
             reportFilter.WithHealthChecks(false);
-
+                  
             services.AddMetrics(
                          Configuration.GetSection("AppMetrics"),
                          options =>
                          {
                              options.WithGlobalTags(
-                                 (globalTags, info) => { globalTags.Add("app", info.EntryAssemblyName); });
+                                 (globalTags, info) =>
+                                 {
+                                     globalTags.Add("app", info.EntryAssemblyName);
+                                     globalTags.Add("server", info.MachineName);
+                                     globalTags.Add("version", info.EntryAssemblyVersion);
+                                 });
                          }).
                      // AddPrometheusPlainTextSerialization().
                      AddPrometheusProtobufSerialization().

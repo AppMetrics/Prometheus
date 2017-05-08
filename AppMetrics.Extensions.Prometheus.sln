@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.12
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
 EndProject
@@ -36,6 +36,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "visualization", "visualization", "{5BC3B2AF-AFC7-4C92-BD1E-D347E83B2497}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana-dashboards", "grafana-dashboards", "{44E50731-4AE5-456F-A84C-CE3C4C977097}"
+	ProjectSection(SolutionItems) = preProject
+		visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json = visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Prometheus", "src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj", "{1DED33F4-95EC-44E2-BCE8-09730375333C}"
 EndProject
