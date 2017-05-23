@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using App.Metrics.Apdex;
 using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
@@ -24,6 +25,22 @@ namespace App.Metrics.Formatters.Prometheus
             var result = new List<MetricFamily>();
             foreach (var group in snapshot.Contexts)
             {
+                foreach (var metricGroup in group.ApdexScores.GroupBy(
+                    source => source.IsMultidimensional ? source.MultidimensionalName : source.Name))
+                {
+                    var promMetricFamily = new MetricFamily
+                                           {
+                                               name = FormatName($"{group.Context}_{metricGroup.Key}"),
+                                               type = MetricType.GAUGE
+                                           };
+                    foreach (var metric in metricGroup)
+                    {
+                        promMetricFamily.metric.AddRange(metric.ToPrometheusMetrics());
+                    }
+
+                    result.Add(promMetricFamily);
+                }
+
                 foreach (var metricGroup in group.Gauges.GroupBy(
                     source => source.IsMultidimensional ? source.MultidimensionalName : source.Name))
                 {
@@ -151,6 +168,23 @@ namespace App.Metrics.Formatters.Prometheus
             return result;
         }
 
+        public static List<Metric> ToPrometheusMetrics(this ApdexValueSource metric)
+        {
+            var result = new List<Metric>
+                         {
+                             new Metric()
+                             {
+                                 gauge = new Gauge()
+                                         {
+                                             value = metric.Value.Score
+                                         },
+                                 label = metric.Tags.ToLabelPairs()
+                             }
+                         };
+
+            return result;
+        }
+
         public static List<Metric> ToPrometheusMetrics(this GaugeValueSource metric)
         {
             var result = new List<Metric>
@@ -241,49 +275,29 @@ namespace App.Metrics.Formatters.Prometheus
 
         public static List<Metric> ToPrometheusMetrics(this TimerValueSource metric)
         {
+            // Prometheus advocates always using seconds as a base unit for time
+            var rescaledVal = metric.Value.Scale(TimeUnit.Seconds, TimeUnit.Seconds);
             var result = new List<Metric>
                          {
                              new Metric()
                              {
                                  summary = new Summary()
                                            {
-                                               sample_count = (ulong)metric.Value.Histogram.Count,
-                                               sample_sum = metric.Value.Histogram.Sum,
+                                               sample_count = (ulong)rescaledVal.Histogram.Count,
+                                               sample_sum = rescaledVal.Histogram.Sum,
                                                quantile =
                                                {
-                                                   new Quantile() { quantile = 0.5, value = metric.Value.Histogram.Mean },
-                                                   new Quantile() { quantile = 0.75, value = metric.Value.Histogram.Percentile75 },
-                                                   new Quantile() { quantile = 0.95, value = metric.Value.Histogram.Percentile95 },
+                                                   new Quantile() { quantile = 0.5, value = rescaledVal.Histogram.Mean },
+                                                   new Quantile() { quantile = 0.75, value = rescaledVal.Histogram.Percentile75 },
+                                                   new Quantile() { quantile = 0.95, value = rescaledVal.Histogram.Percentile95 },
                                                    // new Quantile(){quantile = 0.98, value = metric.Value.Histogram.Percentile98},
-                                                   new Quantile() { quantile = 0.99, value = metric.Value.Histogram.Percentile99 },
+                                                   new Quantile() { quantile = 0.99, value = rescaledVal.Histogram.Percentile99 },
                                                    // new Quantile(){quantile = 0.999, value = metric.Value.Histogram.Percentile999}
                                                }
                                            },
                                  label = metric.Tags.ToLabelPairs()
                              }
                          };
-
-            return result;
-        }
-
-        public static List<Metric> ToRateMetrics(this TimerValueSource metric)
-        {
-            var result = new List<Metric>
-                         {
-                             new Metric()
-                             {
-                                 counter = new Counter()
-                                           {
-                                               value = metric.Value.Rate.Count
-                                           },
-                                 label = metric.Tags.ToLabelPairs()
-                             }
-                         };
-
-            if (metric.Value.Rate.Items != null && metric.Value.Rate.Items.Length > 0)
-            {
-                result.AddRange(metric.Value.Rate.Items.Select(x => x.ToPrometheusMetric()));
-            }
 
             return result;
         }
