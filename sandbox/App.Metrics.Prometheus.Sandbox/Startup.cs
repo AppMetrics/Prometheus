@@ -63,7 +63,7 @@ namespace App.Metrics.Sandbox
 
             var reportFilter = new DefaultMetricsFilter();
             reportFilter.WithHealthChecks(false);
-                  
+
             services.AddMetrics(
                          Configuration.GetSection("AppMetrics"),
                          options =>
@@ -76,8 +76,8 @@ namespace App.Metrics.Sandbox
                                      globalTags.Add("version", info.EntryAssemblyVersion);
                                  });
                          }).
-                     // AddPrometheusPlainTextSerialization().
-                     AddPrometheusProtobufSerialization().
+                     AddPrometheusPlainTextSerialization().
+                     //AddPrometheusProtobufSerialization().
                      AddJsonHealthSerialization().
                      AddHealthChecks(
                          factory =>
