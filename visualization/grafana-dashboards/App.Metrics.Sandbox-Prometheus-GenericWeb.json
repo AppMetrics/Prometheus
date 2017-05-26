@@ -1,46 +1,4 @@
 {
-    "__inputs": [
-        {
-            "name": "DS_APPMETRICS",
-            "label": "appmetrics",
-            "description": "",
-            "type": "datasource",
-            "pluginId": "prometheus",
-            "pluginName": "Prometheus"
-        }
-    ],
-    "__requires": [
-        {
-            "type": "grafana",
-            "id": "grafana",
-            "name": "Grafana",
-            "version": "4.2.0"
-        },
-        {
-            "type": "panel",
-            "id": "graph",
-            "name": "Graph",
-            "version": ""
-        },
-        {
-            "type": "datasource",
-            "id": "prometheus",
-            "name": "Prometheus",
-            "version": "1.0.0"
-        },
-        {
-            "type": "panel",
-            "id": "singlestat",
-            "name": "Singlestat",
-            "version": ""
-        },
-        {
-            "type": "panel",
-            "id": "table",
-            "name": "Table",
-            "version": ""
-        }
-    ],
     "annotations": {
         "list": []
     },
@@ -49,8 +7,9 @@
     "gnetId": 2204,
     "graphTooltip": 1,
     "hideControls": false,
-    "id": null,
+    "id": 24,
     "links": [],
+    "refresh": "5s",
     "rows": [
         {
             "collapse": false,
@@ -149,7 +108,7 @@
                                     }
                                 ]
                             ],
-                            "step": 20,
+                            "step": 2,
                             "tags": [
                                 {
                                     "key": "app",
@@ -256,7 +215,7 @@
                                     }
                                 ]
                             ],
-                            "step": 40,
+                            "step": 4,
                             "tags": [
                                 {
                                     "key": "env",
@@ -441,7 +400,7 @@
                     "targets": [
                         {
                             "dsType": "influxdb",
-                            "expr": "",
+                            "expr": "application_httprequests_apdex{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
                                     "params": [
@@ -458,6 +417,7 @@
                             ],
                             "intervalFactor": 2,
                             "measurement": "application.httprequests__apdex",
+                            "metric": "application_httprequests_apdex",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -475,6 +435,7 @@
                                     }
                                 ]
                             ],
+                            "step": 10,
                             "tags": [
                                 {
                                     "key": "app",
@@ -1092,7 +1053,7 @@
                                     }
                                 ]
                             ],
-                            "step": 1200,
+                            "step": 240,
                             "tags": [
                                 {
                                     "key": "app",
@@ -1662,7 +1623,7 @@
                                     }
                                 ]
                             ],
-                            "step": 4,
+                            "step": 2,
                             "tags": [
                                 {
                                     "key": "env",
@@ -1770,7 +1731,7 @@
                                     }
                                 ]
                             ],
-                            "step": 4,
+                            "step": 2,
                             "tags": [
                                 {
                                     "key": "app",
@@ -1878,7 +1839,7 @@
                                     }
                                 ]
                             ],
-                            "step": 4,
+                            "step": 2,
                             "tags": [
                                 {
                                     "key": "env",
@@ -1961,7 +1922,7 @@
                         {
                             "alias": "$tag_health_check_name",
                             "dsType": "influxdb",
-                            "expr": "application_health_results",
+                            "expr": "application_health_results{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
                                     "params": [
@@ -1983,7 +1944,9 @@
                                 }
                             ],
                             "intervalFactor": 2,
+                            "legendFormat": "{{health_check_name}}",
                             "measurement": "application.health__results",
+                            "metric": "application_health_results",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -2096,6 +2059,7 @@
                     "targets": [
                         {
                             "dsType": "influxdb",
+                            "expr": "application_health_score{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
                                     "params": [
@@ -2110,7 +2074,9 @@
                                     "type": "fill"
                                 }
                             ],
+                            "intervalFactor": 2,
                             "measurement": "application.health__score",
+                            "metric": "application_health_score",
                             "policy": "default",
                             "refId": "A",
                             "resultFormat": "time_series",
@@ -2128,6 +2094,7 @@
                                     }
                                 ]
                             ],
+                            "step": 4,
                             "tags": [
                                 {
                                     "key": "env",
@@ -2587,13 +2554,16 @@
     "schemaVersion": 14,
     "style": "dark",
     "tags": [
-        "influxdb"
+        "prometheus"
     ],
     "templating": {
         "list": [
             {
                 "allValue": null,
-                "current": {},
+                "current": {
+                    "text": "stage",
+                    "value": "stage"
+                },
                 "datasource": "$datasource",
                 "hide": 0,
                 "includeAll": false,
@@ -2613,7 +2583,10 @@
             },
             {
                 "allValue": null,
-                "current": {},
+                "current": {
+                    "text": "App.Metrics.Prometheus.Sandbox",
+                    "value": "App.Metrics.Prometheus.Sandbox"
+                },
                 "datasource": "$datasource",
                 "hide": 0,
                 "includeAll": false,
@@ -2633,8 +2606,8 @@
             },
             {
                 "current": {
-                    "text": "appmetrics",
-                    "value": "appmetrics"
+                    "text": "Prometheus App Metrics",
+                    "value": "Prometheus App Metrics"
                 },
                 "hide": 0,
                 "label": null,
@@ -2729,8 +2702,11 @@
             },
             {
                 "allValue": null,
-                "current": {},
-                "datasource": "${DS_APPMETRICS}",
+                "current": {
+                    "text": "All",
+                    "value": "$__all"
+                },
+                "datasource": "Prometheus App Metrics",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -2750,7 +2726,7 @@
         ]
     },
     "time": {
-        "from": "now-30m",
+        "from": "now-5m",
         "to": "now"
     },
     "timepicker": {
@@ -2780,5 +2756,5 @@
     },
     "timezone": "browser",
     "title": "App Metrics - Web Monitoring - Prometheus",
-    "version": 3
+    "version": 5
 }
