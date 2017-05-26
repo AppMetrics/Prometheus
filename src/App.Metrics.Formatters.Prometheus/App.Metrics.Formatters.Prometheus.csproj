@@ -42,9 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="1.1.0" />
+    <PackageReference Include="App.Metrics" Version="1.2.0-alpha-0520" />
     <PackageReference Include="App.Metrics.Concurrency" Version="1.1.0" />
-    <PackageReference Include="App.Metrics.Extensions.Middleware" Version="1.1.0" />
+    <PackageReference Include="App.Metrics.Extensions.Middleware" Version="1.2.0-alpha-0520" />
     <PackageReference Include="protobuf-net" Version="2.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
       <PrivateAssets>All</PrivateAssets>

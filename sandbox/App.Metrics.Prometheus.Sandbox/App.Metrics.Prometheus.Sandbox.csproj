@@ -9,11 +9,11 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="App.Metrics" Version="1.1.2" />
+    <PackageReference Include="App.Metrics" Version="1.2.0-alpha-0520" />
     <PackageReference Include="App.Metrics.Concurrency" Version="1.1.0" />
-    <PackageReference Include="App.Metrics.Extensions.Middleware" Version="1.1.2" />
-    <PackageReference Include="App.Metrics.Extensions.Mvc" Version="1.1.0" />
-    <PackageReference Include="App.Metrics.Formatters.Json" Version="1.1.0" />
+    <PackageReference Include="App.Metrics.Extensions.Middleware" Version="1.2.0-alpha-0520" />
+    <PackageReference Include="App.Metrics.Extensions.Mvc" Version="1.2.0-alpha-0520" />
+    <PackageReference Include="App.Metrics.Formatters.Json" Version="1.2.0-alpha-0520" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
