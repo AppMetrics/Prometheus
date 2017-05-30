@@ -9,7 +9,7 @@
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
 #tool "nuget:?package=gitreleasemanager"
-#tool "nuget:?package=ReportGenerator"
+// #tool "nuget:?package=ReportGenerator"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
