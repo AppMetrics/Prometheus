@@ -3,7 +3,7 @@ image: Visual Studio 2017
 environment:
   COVERALLS_REPO_TOKEN:
     secure: LJmt2sYpRSDTf+DSWZ0+vOG+PnFvcYwqIk+CXJGKBo0QR4p+8WotE8gcfPgjmGYp
-  PreReleaseSuffix: stable
+  PreReleaseSuffix: 
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   GitUser:
