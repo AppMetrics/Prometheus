@@ -9,6 +9,7 @@
 #tool "nuget:?package=JetBrains.ReSharper.CommandLineTools"
 #tool "nuget:?package=coveralls.io"
 #tool "nuget:?package=gitreleasemanager"
+#tool "nuget:?package=ReportGenerator"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -18,9 +19,9 @@ var configuration               = HasArgument("BuildConfiguration") ? Argument<s
                                   EnvironmentVariable("BuildConfiguration") != null ? EnvironmentVariable("BuildConfiguration") : "Release";
 var coverWith					= HasArgument("CoverWith") ? Argument<string>("CoverWith") :
                                   EnvironmentVariable("CoverWith") != null ? EnvironmentVariable("CoverWith") : "OpenCover"; // None, DotCover, OpenCover
-var skipReSharperCodeInspect    = Argument("SkipCodeInspect", false) || !IsRunningOnWindows();
+var skipReSharperCodeInspect    = HasArgument("SkipCodeInspect") ? Argument<bool>("SkipCodeInspect", false) || !IsRunningOnWindows(): true;
 var preReleaseSuffix            = HasArgument("PreReleaseSuffix") ? Argument<string>("PreReleaseSuffix") :
-	                              (AppVeyor.IsRunningOnAppVeyor && EnvironmentVariable("PreReleaseSuffix") == null || AppVeyor.Environment.Repository.Tag.IsTag) ? null :
+	                              AppVeyor.IsRunningOnAppVeyor && (EnvironmentVariable("PreReleaseSuffix") == null || AppVeyor.Environment.Repository.Tag.IsTag) ? null :
                                   EnvironmentVariable("PreReleaseSuffix") != null ? EnvironmentVariable("PreReleaseSuffix") : "ci";
 var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("BuildNumber") :
                                   AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number :
@@ -28,6 +29,7 @@ var buildNumber                 = HasArgument("BuildNumber") ? Argument<int>("Bu
                                   EnvironmentVariable("BuildNumber") != null ? int.Parse(EnvironmentVariable("BuildNumber")) : 0;
 var gitUser						= HasArgument("GitUser") ? Argument<string>("GitUser") : EnvironmentVariable("GitUser");
 var gitPassword					= HasArgument("GitPassword") ? Argument<string>("GitPassword") : EnvironmentVariable("GitPassword");
+var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<bool>("SkipHtmlCoverageReport", true) || !IsRunningOnWindows() : true;
 
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
@@ -37,7 +39,6 @@ var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
 var reSharperReportsDir         = (DirectoryPath) artifactsDir.Combine("resharper-reports");
-var testCoverageOutputFilePath  = coverageResultsDir.CombineWithFilePath("coverage.xml");
 var testOCoverageOutputFilePath = coverageResultsDir.CombineWithFilePath("openCoverCoverage.xml");
 var htmlCoverageReport			= coverageResultsDir.FullPath + "/coverage.html";
 var mergedCoverageSnapshots		= coverageResultsDir.FullPath + "/coverage.dcvr";
@@ -58,6 +59,17 @@ var openCoverExcludeFile        = "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
 var coverIncludeFilter			= "+:App.Metrics*";
 var coverExcludeFilter			= "-:*.Facts";
 var excludeFromCoverage			= "*.AppMetricsExcludeFromCodeCoverage*";
+string versionSuffix			= null;
+
+if (!string.IsNullOrEmpty(preReleaseSuffix))
+{
+	versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
+}
+ else if (AppVeyor.IsRunningOnAppVeyor && !AppVeyor.Environment.Repository.Tag.IsTag)
+ {
+ 	versionSuffix = buildNumber.ToString("D4");
+ }
+
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -115,7 +127,14 @@ Task("Build")
     .IsDependentOn("Restore")
     .Does(() =>
 {	
-	var settings = new DotNetCoreBuildSettings  { Configuration = configuration };
+	var settings = new DotNetCoreBuildSettings  { Configuration = configuration, VersionSuffix = versionSuffix };
+
+	Context.Information("Building using preReleaseSuffix: " + preReleaseSuffix);
+	Context.Information("Building using versionSuffix: " + versionSuffix);
+
+	// Workaround to fixing pre-release version package references - https://github.com/NuGet/Home/issues/4337
+	settings.ArgumentCustomization = args=>args.Append("/t:Restore /p:RestoreSources=https://api.nuget.org/v3/index.json;https://www.myget.org/F/alhardy/api/v3/index.json;");
+
 
 	if (IsRunningOnWindows())
 	{
@@ -164,13 +183,6 @@ Task("Pack")
 	}
 
 	Context.Information("Packing using preReleaseSuffix: " + preReleaseSuffix);
-
-    string versionSuffix = null;
-    if (!string.IsNullOrEmpty(preReleaseSuffix))
-    {
-        versionSuffix = preReleaseSuffix + "-" + buildNumber.ToString("D4");
-    }
-
 	Context.Information("Packing using versionSuffix: " + versionSuffix);
 
     var settings = new DotNetCorePackSettings
@@ -231,7 +243,7 @@ Task("RunTests")
 });
 
 Task("HtmlCoverageReport")    
-    .WithCriteria(() => FileExists(testCoverageOutputFilePath) && coverWith != "None" && IsRunningOnWindows())    
+    .WithCriteria(() => IsRunningOnWindows() && FileExists(testOCoverageOutputFilePath) && coverWith != "None" && !skipHtmlCoverageReport)    
     .IsDependentOn("RunTests")
     .Does(() => 
 {
@@ -246,7 +258,7 @@ Task("HtmlCoverageReport")
 	}
 	else if (coverWith == "OpenCover")
 	{
-		ReportGenerator(testCoverageOutputFilePath, coverageResultsDir);
+		ReportGenerator(testOCoverageOutputFilePath, coverageResultsDir);
 	}
 });
 

@@ -76,8 +76,7 @@ namespace App.Metrics.Sandbox
                                      globalTags.Add("version", info.EntryAssemblyVersion);
                                  });
                          }).
-                     AddPrometheusPlainTextSerialization().
-                     //AddPrometheusProtobufSerialization().
+                     AddPrometheusSerialization().                     
                      AddJsonHealthSerialization().
                      AddHealthChecks(
                          factory =>
