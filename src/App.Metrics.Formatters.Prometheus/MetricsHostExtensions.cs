@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IMetricsHostBuilder AddPrometheusPlainTextSerialization(this IMetricsHostBuilder host)
         {
-            host.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, PrometheusPlainTextMetricsWriter>());
+            host.Services.Replace(ServiceDescriptor.Transient<IMetricsTextResponseWriter, PrometheusPlainTextMetricsWriter>());
 
             return host;
         }
@@ -23,6 +23,14 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IMetricsHostBuilder AddPrometheusProtobufSerialization(this IMetricsHostBuilder host)
         {
             host.Services.Replace(ServiceDescriptor.Transient<IMetricsResponseWriter, PrometheusProtobufMetricsWriter>());
+
+            return host;
+        }
+
+        public static IMetricsHostBuilder AddPrometheusSerialization(this IMetricsHostBuilder host)
+        {
+            host.AddPrometheusPlainTextSerialization();
+            host.AddPrometheusProtobufSerialization();
 
             return host;
         }

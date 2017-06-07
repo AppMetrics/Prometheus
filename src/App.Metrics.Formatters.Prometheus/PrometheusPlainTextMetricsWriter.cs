@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 namespace App.Metrics.Formatters.Prometheus
 {
     // ReSharper disable UnusedMember.Global
-    public class PrometheusPlainTextMetricsWriter : IMetricsResponseWriter
+    public class PrometheusPlainTextMetricsWriter : IMetricsTextResponseWriter
         // ReSharper restore UnusedMember.Global
     {
         public string ContentType => "text/plain";

@@ -134,7 +134,7 @@ namespace App.Metrics.Formatters.Prometheus
             var result = new List<LabelPair>(tags.Count);
             for (var i = 0; i < tags.Count; i++)
             {
-                result.Add(new LabelPair() { name = tags.Keys[i], value = tags.Values[i] });
+                result.Add(new LabelPair { name = tags.Keys[i], value = tags.Values[i] });
             }
 
             return result;
@@ -142,9 +142,9 @@ namespace App.Metrics.Formatters.Prometheus
 
         public static Metric ToPrometheusMetric(this CounterValue.SetItem item)
         {
-            var result = new Metric()
+            var result = new Metric
                          {
-                             gauge = new Gauge()
+                             gauge = new Gauge
                                      {
                                          value = item.Count
                                      },
@@ -156,9 +156,9 @@ namespace App.Metrics.Formatters.Prometheus
 
         public static Metric ToPrometheusMetric(this MeterValue.SetItem item)
         {
-            var result = new Metric()
+            var result = new Metric
                          {
-                             counter = new Counter()
+                             counter = new Counter
                                        {
                                            value = item.Value.Count
                                        },
@@ -172,9 +172,9 @@ namespace App.Metrics.Formatters.Prometheus
         {
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 gauge = new Gauge()
+                                 gauge = new Gauge
                                          {
                                              value = metric.Value.Score
                                          },
@@ -189,9 +189,9 @@ namespace App.Metrics.Formatters.Prometheus
         {
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 gauge = new Gauge()
+                                 gauge = new Gauge
                                          {
                                              value = metric.Value
                                          },
@@ -206,9 +206,9 @@ namespace App.Metrics.Formatters.Prometheus
         {
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 gauge = new Gauge()
+                                 gauge = new Gauge
                                          {
                                              value = metric.Value.Count
                                          },
@@ -228,9 +228,9 @@ namespace App.Metrics.Formatters.Prometheus
         {
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 counter = new Counter()
+                                 counter = new Counter
                                            {
                                                value = metric.Value.Count
                                            },
@@ -250,19 +250,19 @@ namespace App.Metrics.Formatters.Prometheus
         {
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 summary = new Summary()
+                                 summary = new Summary
                                            {
                                                sample_count = (ulong)metric.Value.Count,
                                                sample_sum = metric.Value.Sum,
                                                quantile =
                                                {
-                                                   new Quantile() { quantile = 0.5, value = metric.Value.Mean },
-                                                   new Quantile() { quantile = 0.75, value = metric.Value.Percentile75 },
-                                                   new Quantile() { quantile = 0.95, value = metric.Value.Percentile95 },
+                                                   new Quantile { quantile = 0.5, value = metric.Value.Mean },
+                                                   new Quantile { quantile = 0.75, value = metric.Value.Percentile75 },
+                                                   new Quantile { quantile = 0.95, value = metric.Value.Percentile95 },
                                                    // new Quantile(){quantile = 0.98, value = metric.Value.Percentile98},
-                                                   new Quantile() { quantile = 0.99, value = metric.Value.Percentile99 },
+                                                   new Quantile { quantile = 0.99, value = metric.Value.Percentile99 },
                                                    // new Quantile(){quantile = 0.999, value = metric.Value.Percentile999}
                                                }
                                            },
@@ -279,19 +279,19 @@ namespace App.Metrics.Formatters.Prometheus
             var rescaledVal = metric.Value.Scale(TimeUnit.Seconds, TimeUnit.Seconds);
             var result = new List<Metric>
                          {
-                             new Metric()
+                             new Metric
                              {
-                                 summary = new Summary()
+                                 summary = new Summary
                                            {
                                                sample_count = (ulong)rescaledVal.Histogram.Count,
                                                sample_sum = rescaledVal.Histogram.Sum,
                                                quantile =
                                                {
-                                                   new Quantile() { quantile = 0.5, value = rescaledVal.Histogram.Mean },
-                                                   new Quantile() { quantile = 0.75, value = rescaledVal.Histogram.Percentile75 },
-                                                   new Quantile() { quantile = 0.95, value = rescaledVal.Histogram.Percentile95 },
+                                                   new Quantile { quantile = 0.5, value = rescaledVal.Histogram.Mean },
+                                                   new Quantile { quantile = 0.75, value = rescaledVal.Histogram.Percentile75 },
+                                                   new Quantile { quantile = 0.95, value = rescaledVal.Histogram.Percentile95 },
                                                    // new Quantile(){quantile = 0.98, value = metric.Value.Histogram.Percentile98},
-                                                   new Quantile() { quantile = 0.99, value = rescaledVal.Histogram.Percentile99 },
+                                                   new Quantile { quantile = 0.99, value = rescaledVal.Histogram.Percentile99 },
                                                    // new Quantile(){quantile = 0.999, value = metric.Value.Histogram.Percentile999}
                                                }
                                            },
