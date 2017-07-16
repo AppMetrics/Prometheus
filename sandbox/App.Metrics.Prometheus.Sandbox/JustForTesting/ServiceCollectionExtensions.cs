@@ -1,6 +1,9 @@
-﻿using System;
-using App.Metrics.Extensions.Middleware.DependencyInjection.Options;
-using App.Metrics.Sandbox.Controllers;
+﻿// <copyright file="ServiceCollectionExtensions.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
+using App.Metrics.AspNetCore.Middleware.Options;
 using App.Metrics.Sandbox.JustForTesting;
 
 // ReSharper disable CheckNamespace
@@ -19,7 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient(
                 provider =>
                 {
-                    var options = provider.GetRequiredService<AspNetMetricsOptions>();
+                    var options = provider.GetRequiredService<AppMetricsMiddlewareOptions>();
                     return new RequestDurationForApdexTesting(options.ApdexTSeconds);
                 });
 

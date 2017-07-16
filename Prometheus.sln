@@ -40,7 +40,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana-dashboards", "grafa
 		visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json = visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Prometheus", "src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj", "{1DED33F4-95EC-44E2-BCE8-09730375333C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.AspNetCore.Formatters.Prometheus", "src\App.Metrics.AspNetCore.Formatters.Prometheus\App.Metrics.AspNetCore.Formatters.Prometheus.csproj", "{1DED33F4-95EC-44E2-BCE8-09730375333C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{A428EA40-E02B-4B19-9401-E9607C93E057}"
 EndProject

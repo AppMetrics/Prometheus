@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿// <copyright file="TestController.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace App.Metrics.Sandbox.Controllers

@@ -4,8 +4,7 @@
 
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Core;
-using App.Metrics.Extensions.Middleware.Abstractions;
+using App.Metrics.Middleware;
 using Microsoft.AspNetCore.Http;
 
 namespace App.Metrics.Formatters.Prometheus

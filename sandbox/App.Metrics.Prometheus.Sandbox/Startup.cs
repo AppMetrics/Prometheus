@@ -1,6 +1,10 @@
-﻿using System;
-using App.Metrics.Configuration;
-using App.Metrics.Filtering;
+﻿// <copyright file="Startup.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
+using System;
+using System.IO;
+using App.Metrics.Builder;
 using App.Metrics.Sandbox.JustForTesting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,19 +20,35 @@ namespace App.Metrics.Sandbox
         private static readonly bool HaveAppRunSampleRequests = true;
         private static readonly bool RunSamplesWithClientId = true;
 
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder().SetBasePath(env.ContentRootPath).
-                                                     AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).
-                                                     AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true).
-                                                     AddEnvironmentVariables();
+        public Startup(IConfiguration configuration) { Configuration = configuration; }
 
-            Configuration = builder.Build();
+        public IConfiguration Configuration { get; }
+
+        public static IWebHost BuildSandboxWebHost(string[] args)
+        {
+            return new WebHostBuilder().UseContentRoot(Directory.GetCurrentDirectory()).
+                                        ConfigureAppConfiguration(
+                                            (context, builder) =>
+                                            {
+                                                builder.SetBasePath(context.HostingEnvironment.ContentRootPath).
+                                                        AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).
+                                                        AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true).
+                                                        AddEnvironmentVariables();
+                                            }).
+                                        ConfigureLogging(
+                                            factory =>
+                                            {
+                                                factory.AddConsole();
+                                            }).
+                                        UseIISIntegration().
+                                        UseKestrel().
+                                        UseStartup<Startup>().
+                                        Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public static void Main(string[] args) { BuildSandboxWebHost(args).Run(); }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime lifetime)
+        public void Configure(IApplicationBuilder app, IApplicationLifetime lifetime)
         {
             if (RunSamplesWithClientId && HaveAppRunSampleRequests)
             {
@@ -40,11 +60,7 @@ namespace App.Metrics.Sandbox
                     });
             }
 
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            // loggerFactory.AddDebug();
-
             app.UseMetrics();
-            app.UseMetricsReporting(lifetime);
 
             app.UseMvc();
 
@@ -61,30 +77,24 @@ namespace App.Metrics.Sandbox
 
             services.AddMvc(options => options.AddMetricsResourceFilter());
 
-            var reportFilter = new DefaultMetricsFilter();
-            reportFilter.WithHealthChecks(false);
+            services.AddMetrics(Configuration.GetSection("AppMetrics")).
+                         AddMetricsMiddleware(
+                         Configuration.GetSection("AspNetMetrics"),
+                         optionsBuilder =>
+                         {
+                             optionsBuilder.AddMetricsPrometheusFormatters().
+                                            AddMetricsTextPrometheusFormatters().
+                                            AddEnvironmentAsciiFormatters();
+                         });
 
-            services.AddMetrics(
-                         Configuration.GetSection("AppMetrics"),
-                         options =>
-                         {
-                             options.WithGlobalTags(
-                                 (globalTags, info) =>
-                                 {
-                                     globalTags.Add("app", info.EntryAssemblyName);
-                                     globalTags.Add("server", info.MachineName);
-                                     globalTags.Add("version", info.EntryAssemblyVersion);
-                                 });
-                         }).
-                     AddPrometheusSerialization().                     
-                     AddJsonHealthSerialization().
-                     AddHealthChecks(
-                         factory =>
-                         {
-                             factory.RegisterPingHealthCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
-                             factory.RegisterHttpGetHealthCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
-                         }).
-                     AddMetricsMiddleware(Configuration.GetSection("AspNetMetrics"));
+            services.
+                AddHealthChecks().
+                AddHealthCheckMiddleware(optionsBuilder => optionsBuilder.AddAsciiFormatters()).
+                AddChecks(registry =>
+                {
+                    registry.AddPingCheck("google ping", "google.com", TimeSpan.FromSeconds(10));
+                    registry.AddHttpGetCheck("github", new Uri("https://github.com/"), TimeSpan.FromSeconds(10));
+                });
         }
     }
 }

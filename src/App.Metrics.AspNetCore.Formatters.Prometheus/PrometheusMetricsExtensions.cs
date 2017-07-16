@@ -6,12 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using App.Metrics.Apdex;
-using App.Metrics.Core;
 using App.Metrics.Counter;
 using App.Metrics.Gauge;
 using App.Metrics.Histogram;
 using App.Metrics.Meter;
-using App.Metrics.Tagging;
 using App.Metrics.Timer;
 
 namespace App.Metrics.Formatters.Prometheus

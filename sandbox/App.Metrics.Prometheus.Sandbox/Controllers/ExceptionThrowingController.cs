@@ -1,9 +1,10 @@
-﻿using App.Metrics.Sandbox.JustForTesting;
-using Microsoft.AspNetCore.Mvc;
+﻿// <copyright file="ExceptionThrowingController.cs" company="Allan Hardy">
+// Copyright (c) Allan Hardy. All rights reserved.
+// </copyright>
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace App.Metrics.Sandbox.Controllers
 {
