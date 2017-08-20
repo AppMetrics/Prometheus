@@ -4,7 +4,7 @@
 
 using System;
 
-namespace App.Metrics.Sandbox.JustForTesting
+namespace App.Metrics.Prometheus.Sandbox.JustForTesting
 {
     public class RequestDurationForApdexTesting
     {

@@ -3,8 +3,9 @@
 // </copyright>
 
 using System;
-using App.Metrics.AspNetCore.Middleware.Options;
-using App.Metrics.Sandbox.JustForTesting;
+using App.Metrics.AspNetCore.TrackingMiddleware;
+using App.Metrics.Prometheus.Sandbox.JustForTesting;
+using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection
@@ -20,10 +21,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<RandomStatusCodeForTesting>();
 
             services.AddTransient(
-                provider =>
+                serviceProvider =>
                 {
-                    var options = provider.GetRequiredService<AppMetricsMiddlewareOptions>();
-                    return new RequestDurationForApdexTesting(options.ApdexTSeconds);
+                    var optionsAccessor = serviceProvider.GetRequiredService<IOptions<MetricsTrackingMiddlewareOptions>>();
+                    return new RequestDurationForApdexTesting(optionsAccessor.Value.ApdexTSeconds);
                 });
 
             return services;

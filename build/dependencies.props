@@ -1,9 +1,8 @@
 <Project>
   <PropertyGroup>
+    <AppMetricsCoreVersion>2.0.0-*</AppMetricsCoreVersion>
     <AppMetricsAspNetCoreVersion>2.0.0-*</AppMetricsAspNetCoreVersion>
-    <AppMetricsAspNetCoreHealthVersion>2.0.0-*</AppMetricsAspNetCoreHealthVersion>
-    <AppMetricsHealthVersion>2.0.0-*</AppMetricsHealthVersion>
-    <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>    
+    <AspNetCoreVersion>2.0.0-*</AspNetCoreVersion>
     <AppMetricsReportingVersion>2.0.0-*</AppMetricsReportingVersion>
     <BenchmarkDotNetVersion>0.10.8</BenchmarkDotNetVersion>
     <CoreFxVersion>4.4.0-*</CoreFxVersion>
@@ -17,6 +16,6 @@
     <FluentAssertionsVersion>4.19.2</FluentAssertionsVersion>
     <FluentAssertionsJsonVersion>4.19.0</FluentAssertionsJsonVersion>
     <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
-	<ProtobufNetVersion>2.1.0</ProtobufNetVersion>
-</PropertyGroup>
+    <ProtobufNetVersion>2.1.0</ProtobufNetVersion>
+  </PropertyGroup>
 </Project>

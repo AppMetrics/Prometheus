@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace App.Metrics.Sandbox.JustForTesting
+namespace App.Metrics.Prometheus.Sandbox.JustForTesting
 {
     public class RandomStatusCodeForTesting
     {

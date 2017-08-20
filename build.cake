@@ -34,7 +34,9 @@ var skipHtmlCoverageReport		= HasArgument("SkipHtmlCoverageReport") ? Argument<b
 //////////////////////////////////////////////////////////////////////
 // DEFINE FILES & DIRECTORIES
 //////////////////////////////////////////////////////////////////////
-var packDirs                    = new [] { Directory("./src/App.Metrics.AspNetCore.Formatters.Prometheus") };
+var packDirs                    = new [] { 
+											Directory("./src/App.Metrics.Formatters.Prometheus")											
+										  };
 var artifactsDir                = (DirectoryPath) Directory("./artifacts");
 var testResultsDir              = (DirectoryPath) artifactsDir.Combine("test-results");
 var coverageResultsDir          = (DirectoryPath) artifactsDir.Combine("coverage");
