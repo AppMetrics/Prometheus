@@ -14,12 +14,9 @@ namespace App.Metrics.Formatters.Prometheus
     {
         public MetricsPrometheusOptions()
         {
-            MetricNameMapping = new GeneratedMetricNameMapping();
             MetricNameFormatter = PrometheusFormatterConstants.MetricNameFormatter;
         }
 
         public Func<string, string, string> MetricNameFormatter { get; set; }
-
-        public GeneratedMetricNameMapping MetricNameMapping { get; set; }
     }
 }

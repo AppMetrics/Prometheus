@@ -17,14 +17,14 @@ namespace Microsoft.Extensions.DependencyInjection
     /// </summary>
     public static class MetricsPrometheusFormattingServiceCollectionExtensions
     {
-        public static void AddPrometheusFormatterServices(this IServiceCollection services)
+        internal static void AddPrometheusFormatterServices(this IServiceCollection services)
         {
             var prometheusSetupOptionsDescriptor =
                 ServiceDescriptor.Transient<IConfigureOptions<MetricsOptions>, MetricsPrometheusOptionsSetup>();
             services.TryAddEnumerable(prometheusSetupOptionsDescriptor);
         }
 
-        public static void AddDefaultFormatterOptions(this IServiceCollection services)
+        internal static void AddDefaultFormatterOptions(this IServiceCollection services)
         {
             services.Configure<MetricsOptions>(
                 options =>

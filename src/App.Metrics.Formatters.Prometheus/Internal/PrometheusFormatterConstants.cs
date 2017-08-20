@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Text.RegularExpressions;
 
 namespace App.Metrics.Formatters.Prometheus.Internal
 {
@@ -10,7 +11,9 @@ namespace App.Metrics.Formatters.Prometheus.Internal
     {
         public static readonly Func<string, string, string> MetricNameFormatter =
             (metricContext, metricName) => string.IsNullOrWhiteSpace(metricContext)
-                ? $"{metricName}".Replace(' ', '_').ToLowerInvariant()
-                : $"{metricContext}__{metricName}".Replace(' ', '_').ToLowerInvariant();
+                ? MetricNameRegex.Replace(metricName, "_").ToLowerInvariant()
+                : MetricNameRegex.Replace($"{metricContext}_{metricName}", "_").ToLowerInvariant();
+
+        private static readonly Regex MetricNameRegex = new Regex("[^a-z0-9A-Z:_]");
     }
 }

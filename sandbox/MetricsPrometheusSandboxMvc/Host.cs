@@ -2,6 +2,8 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
+using App.Metrics.AspNetCore;
 using App.Metrics.AspNetCore.Endpoints;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +20,7 @@ namespace MetricsPrometheusSandboxMvc
             return WebHost
                 .CreateDefaultBuilder(args)
                 .ConfigureServices(AddMetricsOptions)
-                .UseMetrics()
+                .UseMetrics(ConfigureMetricsOptions())
                 .UseStartup<Startup>()
                 .Build();
         }
@@ -27,8 +29,15 @@ namespace MetricsPrometheusSandboxMvc
 
         private static void AddMetricsOptions(IServiceCollection services)
         {
-            services.AddPrometheusFormatterServices();
             services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MetricsEndpointsOptions>, MetricsEndpointsOptionsSetup>());
+        }
+
+        private static Action<MetricsWebHostOptions> ConfigureMetricsOptions()
+        {
+            return options =>
+            {
+                options.CoreBuilder.AddPrometheusFormattersCore();
+            };
         }
     }
 }

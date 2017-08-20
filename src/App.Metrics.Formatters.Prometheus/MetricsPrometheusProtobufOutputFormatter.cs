@@ -6,8 +6,8 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using App.Metrics.Formatters.Prometheus.Extensions;
 using App.Metrics.Formatters.Prometheus.Internal;
+using App.Metrics.Formatters.Prometheus.Internal.Extensions;
 
 namespace App.Metrics.Formatters.Prometheus
 {
@@ -38,7 +38,7 @@ namespace App.Metrics.Formatters.Prometheus
 
             using (var writer = new BinaryWriter(output))
             {
-                writer.Write(ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot()));
+                writer.Write(ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter)));
             }
 
             return Task.CompletedTask;
