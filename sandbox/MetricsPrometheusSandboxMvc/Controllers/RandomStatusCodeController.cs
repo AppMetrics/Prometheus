@@ -3,10 +3,11 @@
 // </copyright>
 
 using System;
-using App.Metrics.Prometheus.Sandbox.JustForTesting;
+using App.Metrics;
+using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Metrics.Prometheus.Sandbox.Controllers
+namespace MetricsPrometheusSandboxMvc.Controllers
 {
     [Route("api/[controller]")]
     public class RandomStatusCodeController : Controller

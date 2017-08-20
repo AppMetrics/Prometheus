@@ -1,22 +1,23 @@
-﻿// <copyright file="SatisfyingController.cs" company="Allan Hardy">
+// <copyright file="ToleratingController.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
 using System;
 using System.Threading.Tasks;
-using App.Metrics.Prometheus.Sandbox.JustForTesting;
+using App.Metrics;
+using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Metrics.Prometheus.Sandbox.Controllers
+namespace MetricsPrometheusSandboxMvc.Controllers
 {
     [Route("api/[controller]")]
-    public class SatisfyingController : Controller
+    public class ToleratingController : Controller
     {
-        private static readonly Random Rnd = new Random();
         private readonly RequestDurationForApdexTesting _durationForApdexTesting;
+
         private readonly IMetrics _metrics;
 
-        public SatisfyingController(IMetrics metrics, RequestDurationForApdexTesting durationForApdexTesting)
+        public ToleratingController(IMetrics metrics, RequestDurationForApdexTesting durationForApdexTesting)
         {
             _metrics = metrics ?? throw new ArgumentNullException(nameof(metrics));
             _durationForApdexTesting = durationForApdexTesting;
@@ -25,7 +26,7 @@ namespace App.Metrics.Prometheus.Sandbox.Controllers
         [HttpGet]
         public async Task<int> Get()
         {
-            var duration = _durationForApdexTesting.NextSatisfiedDuration;
+            var duration = _durationForApdexTesting.NextToleratingDuration;
 
             await Task.Delay(duration, HttpContext.RequestAborted);
 

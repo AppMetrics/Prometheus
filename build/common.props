@@ -10,10 +10,10 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<PackageIconUrl>http://app-metrics.io/logo.png</PackageIconUrl>
-		<PackageProjectUrl>http://app-metrics.io/reporting/influxdb.html</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/AppMetrics/InfluxDB/blob/master/LICENSE</PackageLicenseUrl>
+		<PackageProjectUrl>http://app-metrics.io/reporting/prometheus.html</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/AppMetrics/Prometheus/blob/master/LICENSE</PackageLicenseUrl>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>git://github.com/AppMetrics/InfluxDB</RepositoryUrl>
+		<RepositoryUrl>git://github.com/AppMetrics/Prometheus</RepositoryUrl>
 		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
 		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
 		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>

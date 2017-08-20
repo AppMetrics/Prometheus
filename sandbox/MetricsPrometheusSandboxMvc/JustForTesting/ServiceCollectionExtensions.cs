@@ -4,7 +4,7 @@
 
 using System;
 using App.Metrics.AspNetCore.TrackingMiddleware;
-using App.Metrics.Prometheus.Sandbox.JustForTesting;
+using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable CheckNamespace

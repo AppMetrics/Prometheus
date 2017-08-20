@@ -2,11 +2,12 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using App.Metrics;
 using App.Metrics.AspNetCore.Endpoints;
 using App.Metrics.Formatters.Prometheus;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Prometheus.Sandbox
+namespace MetricsPrometheusSandboxMvc
 {
     /// <summary>
     ///     Sets up the metrics web hosting options for this application

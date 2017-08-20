@@ -6,7 +6,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Metrics.Prometheus.Sandbox.Controllers
+namespace MetricsPrometheusSandboxMvc.Controllers
 {
     [Route("api/[controller]")]
     public class FileController : Controller

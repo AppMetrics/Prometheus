@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace App.Metrics.Prometheus.Sandbox
+namespace MetricsPrometheusSandboxMvc
 {
     public static class Host
     {

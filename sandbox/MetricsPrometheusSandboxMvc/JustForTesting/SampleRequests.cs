@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using App.Metrics.Scheduling;
 
-namespace App.Metrics.Prometheus.Sandbox.JustForTesting
+namespace MetricsPrometheusSandboxMvc.JustForTesting
 {
     public static class SampleRequests
     {

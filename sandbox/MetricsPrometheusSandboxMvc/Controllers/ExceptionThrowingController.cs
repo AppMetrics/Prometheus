@@ -4,9 +4,10 @@
 
 using System;
 using System.Threading.Tasks;
+using App.Metrics;
 using Microsoft.AspNetCore.Mvc;
 
-namespace App.Metrics.Prometheus.Sandbox.Controllers
+namespace MetricsPrometheusSandboxMvc.Controllers
 {
     [Route("api/[controller]")]
     public class ExceptionThrowingController : Controller

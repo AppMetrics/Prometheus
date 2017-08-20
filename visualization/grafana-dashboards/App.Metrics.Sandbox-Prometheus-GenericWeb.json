@@ -72,7 +72,7 @@
                     },
                     "targets": [
                         {
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "rate(application_httprequests_transactions_count{env=\"$environment\",app=\"$application\",server=\"$server\"}[1m])*60",
                             "groupBy": [
                                 {
@@ -195,7 +195,7 @@
                     },
                     "targets": [
                         {
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_one_minute_error_percentage_rate{env=\"$environment\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [],
                             "intervalFactor": 2,
@@ -277,7 +277,7 @@
                     "targets": [
                         {
                             "alias": "",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_active{env=\"$environment\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -399,7 +399,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_apdex{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -543,7 +543,7 @@
                     "targets": [
                         {
                             "alias": "$col",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "rate(application_httprequests_transactions_count{env=\"$environment\",app=\"$application\",server=\"$server\"}[1m])*60",
                             "groupBy": [
                                 {
@@ -723,7 +723,7 @@
                     "targets": [
                         {
                             "alias": "$col",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_transactions{env=\"$environment\",app=\"$application\",server=\"$server\",quantile=\"0.75\"}",
                             "groupBy": [
                                 {
@@ -904,7 +904,7 @@
                     "targets": [
                         {
                             "alias": "",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_one_minute_error_percentage_rate{env=\"$environment\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -1023,7 +1023,7 @@
                     "targets": [
                         {
                             "alias": "$tag_http_status_code",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_errors{env=\"$environment\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -1110,7 +1110,7 @@
                     "targets": [
                         {
                             "alias": "$col",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "rate(application_httprequests_error_rate_total[1m])*60",
                             "groupBy": [
                                 {
@@ -1304,7 +1304,7 @@
                     "targets": [
                         {
                             "alias": "$tag_route",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "rate(application_httprequests_transactions_per_endpoint_count{env=\"$environment\",app=\"$application\",server=\"$server\"}[1m])*60",
                             "groupBy": [
                                 {
@@ -1435,7 +1435,7 @@
                     "targets": [
                         {
                             "alias": "$tag_route",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_transactions_per_endpoint{env=\"$environment\",app=\"$application\",server=\"$server\",quantile=\"0.95\"}",
                             "groupBy": [
                                 {
@@ -1581,7 +1581,7 @@
                     "targets": [
                         {
                             "alias": "$tag_route",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_transactions_per_endpoint{env=\"$environment\",app=\"$application\",server=\"$server\",quantile=\"0.95\"}",
                             "groupBy": [
                                 {
@@ -1689,7 +1689,7 @@
                     "targets": [
                         {
                             "alias": "$tag_route",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_one_minute_error_percentage_rate_per_endpoint{env=\"$environment\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -1797,7 +1797,7 @@
                     "targets": [
                         {
                             "alias": "$tag_route",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "rate(application_httprequests_transactions_per_endpoint_count{env=\"$environment\",app=\"$application\",server=\"$server\"}[1m])*60",
                             "groupBy": [
                                 {
@@ -1921,7 +1921,7 @@
                     "targets": [
                         {
                             "alias": "$tag_health_check_name",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_health_results{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -2058,7 +2058,7 @@
                     },
                     "targets": [
                         {
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_health_score{env=\"stage\",app=\"$application\",server=\"$server\"}",
                             "groupBy": [
                                 {
@@ -2183,7 +2183,7 @@
                     "targets": [
                         {
                             "alias": "$col",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_post_size{env=\"$environment\",app=\"$application\",server=\"$server\",quantile=\"0.75\"}",
                             "groupBy": [
                                 {
@@ -2380,7 +2380,7 @@
                     "targets": [
                         {
                             "alias": "$col",
-                            "dsType": "influxdb",
+                            "dsType": "prometheus",
                             "expr": "application_httprequests_put_size{env=\"$environment\",app=\"$application\",server=\"$server\",quantile=\"0.75\"}",
                             "groupBy": [
                                 {

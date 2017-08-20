@@ -4,7 +4,7 @@
 
 using System;
 
-namespace App.Metrics.Prometheus.Sandbox.JustForTesting
+namespace MetricsPrometheusSandboxMvc.JustForTesting
 {
     public class RandomBufferGenerator
     {
