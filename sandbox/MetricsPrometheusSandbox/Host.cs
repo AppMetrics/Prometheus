@@ -11,6 +11,7 @@ using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Serilog;
 
 namespace MetricsPrometheusSandbox
 {
@@ -112,7 +113,12 @@ namespace MetricsPrometheusSandbox
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddLogging();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.LiterateConsole()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
+
             services.AddMetricsCore()
                 .AddClockType<StopwatchClock>()
                 .AddPrometheusFormattersCore();
