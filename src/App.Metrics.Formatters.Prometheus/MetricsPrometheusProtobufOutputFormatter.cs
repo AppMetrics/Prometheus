@@ -6,6 +6,9 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+#if !NETSTANDARD1_6
+using App.Metrics.Internal;
+#endif
 using App.Metrics.Formatters.Prometheus.Internal;
 using App.Metrics.Formatters.Prometheus.Internal.Extensions;
 
@@ -29,7 +32,7 @@ namespace App.Metrics.Formatters.Prometheus
         public Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (output == null)
             {
@@ -41,7 +44,11 @@ namespace App.Metrics.Formatters.Prometheus
                 writer.Write(ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter)));
             }
 
+#if !NETSTANDARD1_6
+            return AppMetricsTaskHelper.CompletedTask();
+#else
             return Task.CompletedTask;
+#endif
         }
     }
 }

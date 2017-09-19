@@ -2,7 +2,6 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ namespace MetricsPrometheusSandboxMvc
 {
     public class Startup
     {
-        private static readonly bool HaveAppRunSampleRequests = true;
+        private const bool HaveAppRunSampleRequests = true;
 
         public Startup(IConfiguration configuration) { Configuration = configuration; }
 
@@ -21,12 +20,9 @@ namespace MetricsPrometheusSandboxMvc
 
         public void Configure(IApplicationBuilder app, IApplicationLifetime lifetime)
         {
-            app.UseMvc();
+            app.UseTestStuff(lifetime, HaveAppRunSampleRequests);
 
-            if (HaveAppRunSampleRequests)
-            {
-                SampleRequests.Run(lifetime.ApplicationStopping);
-            }
+            app.UseMvc();
         }
 
         public void ConfigureServices(IServiceCollection services)

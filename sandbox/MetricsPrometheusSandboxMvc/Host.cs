@@ -2,14 +2,13 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System;
+using App.Metrics;
 using App.Metrics.AspNetCore;
-using App.Metrics.AspNetCore.Endpoints;
+using App.Metrics.Formatters.Prometheus;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Events;
 
 namespace MetricsPrometheusSandboxMvc
 {
@@ -17,27 +16,40 @@ namespace MetricsPrometheusSandboxMvc
     {
         public static IWebHost BuildWebHost(string[] args)
         {
-            return WebHost
-                .CreateDefaultBuilder(args)
-                .ConfigureServices(AddMetricsOptions)
-                .UseMetrics(ConfigureMetricsOptions())
-                .UseStartup<Startup>()
-                .Build();
+            ConfigureLogging();
+
+            return WebHost.CreateDefaultBuilder(args)
+                          .ConfigureMetricsWithDefaults(
+                              builder =>
+                              {
+                                  builder.OutputMetrics.AsPrometheusPlainText();
+                                  builder.OutputMetrics.AsPrometheusProtobuf();
+                              })
+                          .UseMetrics(
+                              options =>
+                              {
+                                  options.EndpointOptions = endpointsOptions =>
+                                  {
+                                      // TODO: provide an easier way?
+                                      endpointsOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
+                                      endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+                                  };
+                              })
+                          .UseSerilog()
+                          .UseStartup<Startup>()
+                          .Build();
         }
 
         public static void Main(string[] args) { BuildWebHost(args).Run(); }
 
-        private static void AddMetricsOptions(IServiceCollection services)
+        private static void ConfigureLogging()
         {
-            services.TryAddEnumerable(ServiceDescriptor.Transient<IConfigureOptions<MetricsEndpointsOptions>, MetricsEndpointsOptionsSetup>());
-        }
-
-        private static Action<MetricsWebHostOptions> ConfigureMetricsOptions()
-        {
-            return options =>
-            {
-                options.CoreBuilder.AddPrometheusFormattersCore();
-            };
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
+                .WriteTo.LiterateConsole()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
         }
     }
 }

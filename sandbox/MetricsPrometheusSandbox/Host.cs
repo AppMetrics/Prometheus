@@ -4,14 +4,14 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using App.Metrics;
-using App.Metrics.Infrastructure;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Serilog;
+using static System.Console;
 
 namespace MetricsPrometheusSandbox
 {
@@ -19,140 +19,99 @@ namespace MetricsPrometheusSandbox
     {
         private static readonly Random Rnd = new Random();
 
-        public static IServiceCollection ServiceCollection { get; } = new ServiceCollection();
+        private static IConfigurationRoot Configuration { get; set; }
 
-        // public static async Task Main(string[] args)
-        public static void Main(string[] args)
+        private static IMetricsRoot Metrics { get; set; }
+
+        public static async Task Main()
         {
             Init();
 
-            ConfigureServices(ServiceCollection);
-
-            var provider = ServiceCollection.BuildServiceProvider();
-            var metrics = provider.GetRequiredService<IMetrics>();
-            var metricsProvider = provider.GetRequiredService<IProvideMetricValues>();
-            var metricsOptionsAccessor = provider.GetRequiredService<IOptions<MetricsOptions>>();
-
             var cancellationTokenSource = new CancellationTokenSource();
 
-            RunUntilEsc(
-                TimeSpan.FromSeconds(5),
-                cancellationTokenSource,
-                () =>
-                {
-                    Console.Clear();
+            await WriteMetricsAsync(cancellationTokenSource);
 
-                    RecordMetrics(metrics);
-
-                    WriteMetrics(
-                        metricsProvider,
-                        metricsOptionsAccessor,
-                        cancellationTokenSource);
-
-                    Console.WriteLine("Complete. Waiting for next run...");
-                });
+            PressAnyKeyToContinue();
         }
 
-        private static void WriteMetrics(
-            IProvideMetricValues metricsProvider,
-            IOptions<MetricsOptions> metricsOptionsAccessor,
-            CancellationTokenSource cancellationTokenSource)
+        private static void PressAnyKeyToContinue()
         {
-            var metricsData = metricsProvider.Get();
+            WriteLine();
+            BackgroundColor = ConsoleColor.White;
+            ForegroundColor = ConsoleColor.Blue;
+            WriteLine("Press any key to continue...");
+            ResetColor();
+            ReadKey();
+            Clear();
+        }
 
-            Console.WriteLine("Metrics Formatters");
-            Console.WriteLine("-------------------------------------------");
-
-            foreach (var formatter in metricsOptionsAccessor.Value.OutputMetricsFormatters)
+        private static async Task WriteMetricsAsync(CancellationTokenSource cancellationTokenSource)
+        {
+            foreach (var unused in Enumerable.Range(0, 10))
             {
-                Console.WriteLine($"Formatter: {formatter.GetType().FullName}");
-                Console.WriteLine("-------------------------------------------");
+                RecordMetrics();
+            }
+
+            var metricsData = Metrics.Snapshot.Get();
+
+            WriteLine("Metrics Formatters");
+            WriteLine("-------------------------------------------");
+
+            foreach (var formatter in Metrics.OutputMetricsFormatters)
+            {
+                WriteLine($"Formatter: {formatter.GetType().FullName}");
+                WriteLine("-------------------------------------------");
 
                 using (var stream = new MemoryStream())
                 {
-                    formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
+                    await formatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token);
 
                     var result = Encoding.UTF8.GetString(stream.ToArray());
 
-                    Console.WriteLine(result);
+                    WriteLine(result);
                 }
             }
-
-            Console.WriteLine("Default Metrics Formatter");
-            Console.WriteLine("-------------------------------------------");
-            Console.WriteLine($"Formatter: {metricsOptionsAccessor.Value.DefaultOutputMetricsFormatter}");
-            Console.WriteLine("-------------------------------------------");
-
-            using (var stream = new MemoryStream())
-            {
-                metricsOptionsAccessor.Value.DefaultOutputMetricsFormatter.WriteAsync(stream, metricsData, cancellationTokenSource.Token).GetAwaiter().GetResult();
-
-                var result = Encoding.UTF8.GetString(stream.ToArray());
-
-                Console.WriteLine(result);
-            }
         }
 
-        private static void RecordMetrics(IMetrics metrics)
+        private static void RecordMetrics()
         {
-            metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
-            metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
-            metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
-            metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
+            Metrics.Measure.Counter.Increment(ApplicationsMetricsRegistry.CounterOne);
+            Metrics.Measure.Gauge.SetValue(ApplicationsMetricsRegistry.GaugeOne, Rnd.Next(0, 100));
+            Metrics.Measure.Histogram.Update(ApplicationsMetricsRegistry.HistogramOne, Rnd.Next(0, 100));
+            Metrics.Measure.Meter.Mark(ApplicationsMetricsRegistry.MeterOne, Rnd.Next(0, 100));
 
-            using (metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
+            using (Metrics.Measure.Timer.Time(ApplicationsMetricsRegistry.TimerOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }
 
-            using (metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
+            using (Metrics.Measure.Apdex.Track(ApplicationsMetricsRegistry.ApdexOne))
             {
                 Thread.Sleep(Rnd.Next(0, 100));
             }
-        }
-
-        private static void ConfigureServices(IServiceCollection services)
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.LiterateConsole()
-                .WriteTo.Seq("http://localhost:5341")
-                .CreateLogger();
-
-            services.AddMetricsCore()
-                .AddClockType<StopwatchClock>()
-                .AddPrometheusFormattersCore();
         }
 
         private static void Init()
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            builder.Build();
-        }
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
 
-        private static void RunUntilEsc(TimeSpan delayBetweenRun, CancellationTokenSource cancellationTokenSource, Action action)
-        {
-            Console.WriteLine("Press ESC to stop");
+            Configuration = configurationBuilder.Build();
 
-            while (true)
-            {
-                while (!Console.KeyAvailable)
-                {
-                    action();
-                    Thread.Sleep(delayBetweenRun);
-                }
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.LiterateConsole()
+                .WriteTo.Seq("http://localhost:5341")
+                .CreateLogger();
 
-                while (Console.KeyAvailable)
-                {
-                    var key = Console.ReadKey(false).Key;
+            var metricsConfigSection = Configuration.GetSection(nameof(MetricsOptions));
 
-                    if (key == ConsoleKey.Escape)
-                    {
-                        cancellationTokenSource.Cancel();
-                        return;
-                    }
-                }
-            }
+            Metrics = new MetricsBuilder()
+                .Configuration.Configure(metricsConfigSection.AsEnumerable())
+                .OutputMetrics.AsPrometheusPlainText()
+                .OutputMetrics.AsPrometheusProtobuf()
+                .Build();
         }
     }
 }

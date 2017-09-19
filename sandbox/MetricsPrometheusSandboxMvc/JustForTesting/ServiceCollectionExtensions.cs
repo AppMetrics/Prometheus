@@ -3,7 +3,7 @@
 // </copyright>
 
 using System;
-using App.Metrics.AspNetCore.TrackingMiddleware;
+using App.Metrics.AspNetCore.Tracking;
 using MetricsPrometheusSandboxMvc.JustForTesting;
 using Microsoft.Extensions.Options;
 
@@ -16,14 +16,14 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddTestStuff(this IServiceCollection services)
         {
             services.AddTransient<Func<double, RequestDurationForApdexTesting>>(
-                provider => { return apdexTSeconds => new RequestDurationForApdexTesting(apdexTSeconds); });
+                serviceProvider => { return apdexTSeconds => new RequestDurationForApdexTesting(apdexTSeconds); });
 
-            services.AddTransient<RandomStatusCodeForTesting>();
+            services.AddSingleton<RandomValuesForTesting>();
 
             services.AddTransient(
                 serviceProvider =>
                 {
-                    var optionsAccessor = serviceProvider.GetRequiredService<IOptions<MetricsTrackingMiddlewareOptions>>();
+                    var optionsAccessor = serviceProvider.GetRequiredService<IOptions<MetricsWebTrackingOptions>>();
                     return new RequestDurationForApdexTesting(optionsAccessor.Value.ApdexTSeconds);
                 });
 

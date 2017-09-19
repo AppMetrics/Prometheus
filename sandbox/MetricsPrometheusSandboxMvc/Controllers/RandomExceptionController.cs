@@ -1,4 +1,4 @@
-﻿// <copyright file="RandomStatusCodeController.cs" company="Allan Hardy">
+﻿// <copyright file="RandomExceptionController.cs" company="Allan Hardy">
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace MetricsPrometheusSandboxMvc.Controllers
 {
     [Route("api/[controller]")]
-    public class RandomStatusCodeController : Controller
+    public class RandomExceptionController : Controller
     {
         private readonly RandomValuesForTesting _randomValuesForTesting;
 
-        public RandomStatusCodeController(RandomValuesForTesting randomValuesForTesting)
+        public RandomExceptionController(RandomValuesForTesting randomValuesForTesting)
         {
             _randomValuesForTesting = randomValuesForTesting;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public void Get()
         {
-            return StatusCode(_randomValuesForTesting.NextStatusCode());
+            throw _randomValuesForTesting.NextException();
         }
     }
 }
