@@ -74,7 +74,6 @@ logs/*
 temp/
 
 #Tools and packages
-tools/*
 .nuget
 .nuget/*
 artifacts
