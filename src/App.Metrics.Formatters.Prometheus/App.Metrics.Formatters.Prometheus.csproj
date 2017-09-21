@@ -25,7 +25,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
     <DebugType>full</DebugType>
-    <VersionPrefix>1.1.1</VersionPrefix>
+    <VersionPrefix>1.1.2</VersionPrefix>
     <RootNamespace>App.Metrics.Formatters.Prometheus</RootNamespace>
   </PropertyGroup>
 
