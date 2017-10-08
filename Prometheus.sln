@@ -1,0 +1,93 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26906.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2D805782-756E-4C98-B22E-F502BEE95318}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31A4DDB1-952E-4EED-96EF-29C669279A86}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		AppMetrics.ruleset = AppMetrics.ruleset
+		appveyor.yml = appveyor.yml
+		global.json = global.json
+		stylecop.json = stylecop.json
+		version.props = version.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DD2E4647-7125-4CE3-9BA5-B45A26113A31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cake", "Cake", "{E1A943F7-5493-4B64-A448-3E9EEA582E20}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		build_travis.sh = build_travis.sh
+		tools\packages.config = tools\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{4199989A-27B6-4A6A-99C2-1AF6B01DA5EB}"
+	ProjectSection(SolutionItems) = preProject
+		GitReleaseManager.yaml = GitReleaseManager.yaml
+		ISSUE_TEMPLATE.md = ISSUE_TEMPLATE.md
+		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "visualization", "visualization", "{5BC3B2AF-AFC7-4C92-BD1E-D347E83B2497}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "grafana-dashboards", "grafana-dashboards", "{44E50731-4AE5-456F-A84C-CE3C4C977097}"
+	ProjectSection(SolutionItems) = preProject
+		visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json = visualization\grafana-dashboards\App.Metrics.Sandbox-Prometheus-GenericWeb.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{A428EA40-E02B-4B19-9401-E9607C93E057}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{456C956F-878D-4843-850D-56E98ACD3B48}"
+	ProjectSection(SolutionItems) = preProject
+		build\common.props = build\common.props
+		build\dependencies.props = build\dependencies.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Metrics.Formatters.Prometheus", "src\App.Metrics.Formatters.Prometheus\App.Metrics.Formatters.Prometheus.csproj", "{EDE334A0-4408-4C84-9406-2CB74FF04AD8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandboxMvc", "sandbox\MetricsPrometheusSandboxMvc\MetricsPrometheusSandboxMvc.csproj", "{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsPrometheusSandbox", "sandbox\MetricsPrometheusSandbox\MetricsPrometheusSandbox.csproj", "{98A4D76B-976E-4771-821E-DEF13FC9E12B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDE334A0-4408-4C84-9406-2CB74FF04AD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDE334A0-4408-4C84-9406-2CB74FF04AD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDE334A0-4408-4C84-9406-2CB74FF04AD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDE334A0-4408-4C84-9406-2CB74FF04AD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98A4D76B-976E-4771-821E-DEF13FC9E12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A4D76B-976E-4771-821E-DEF13FC9E12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A4D76B-976E-4771-821E-DEF13FC9E12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A4D76B-976E-4771-821E-DEF13FC9E12B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1A943F7-5493-4B64-A448-3E9EEA582E20} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{4199989A-27B6-4A6A-99C2-1AF6B01DA5EB} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{5BC3B2AF-AFC7-4C92-BD1E-D347E83B2497} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{44E50731-4AE5-456F-A84C-CE3C4C977097} = {5BC3B2AF-AFC7-4C92-BD1E-D347E83B2497}
+		{456C956F-878D-4843-850D-56E98ACD3B48} = {31A4DDB1-952E-4EED-96EF-29C669279A86}
+		{EDE334A0-4408-4C84-9406-2CB74FF04AD8} = {2D805782-756E-4C98-B22E-F502BEE95318}
+		{8DAE7BF3-2DC3-4D48-B375-B970B7AB92D3} = {A428EA40-E02B-4B19-9401-E9607C93E057}
+		{98A4D76B-976E-4771-821E-DEF13FC9E12B} = {A428EA40-E02B-4B19-9401-E9607C93E057}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {014944FE-3C5D-4C9B-B2B1-43B5F23B4643}
+	EndGlobalSection
+EndGlobal

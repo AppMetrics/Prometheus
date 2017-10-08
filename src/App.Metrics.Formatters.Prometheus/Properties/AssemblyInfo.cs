@@ -2,26 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
-using System.Reflection;
-using System.Resources;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-
-[assembly: AssemblyProduct("App.Metrics")]
-[assembly: AssemblyCompany("Allan Hardy.")]
-[assembly: NeutralResourcesLanguage("en-us")]
-[assembly: AssemblyCopyright("© Allan Hardy. All rights reserved.")]
-
-// Setting ComVisible to false makes the types in this assembly not visible
-// to COM components.  If you need to access a type in this assembly from
-// COM, set the ComVisible attribute to true on that type.
-
-[assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly: Guid("95544142-7bfb-4b6b-8504-efb6df2167e0")]
+[assembly: InternalsVisibleTo("App.Metrics.Reporting.Prometheus, PublicKey=00240000048000009400000006020000002400005253413100040000010001000961061aa9f970163db728a9792c1cfb7be51f2f986054c676345f9e43f95af5f3114b1962d10888a3ea1dff99bf56bce565f887cb4b004fc44ccb7335700260012a65b9cdd090e6b60c8c67c434ca49563c82c66695f8dc0776770bfaf481ef816767b7dd67d083960a6fcfe33c3c0e1cc198fe7a13b3283133d21b3435ebbb")]
+[assembly: InternalsVisibleTo("App.Metrics.Reporting.Prometheus.Facts, PublicKey=00240000048000009400000006020000002400005253413100040000010001000961061aa9f970163db728a9792c1cfb7be51f2f986054c676345f9e43f95af5f3114b1962d10888a3ea1dff99bf56bce565f887cb4b004fc44ccb7335700260012a65b9cdd090e6b60c8c67c434ca49563c82c66695f8dc0776770bfaf481ef816767b7dd67d083960a6fcfe33c3c0e1cc198fe7a13b3283133d21b3435ebbb")]

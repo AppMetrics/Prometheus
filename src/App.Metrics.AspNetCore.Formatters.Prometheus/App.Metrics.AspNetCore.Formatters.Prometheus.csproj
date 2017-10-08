@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\build\common.props" />
+
+  <PropertyGroup>    
+	<Description>App Metrics ASP.NET Core Prometheus allows metrics data to be formatted in Prometheus formats on metric endpoints. e.g. using plain text &amp; protobuf.</Description>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageTags>appmetrics;prometheus</PackageTags>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="App.Metrics.AspNetCore.Abstractions" Version="$(AppMetricsAspNetCoreVersion)" />
+    <PackageReference Include="protobuf-net" Version="$(ProtobufNetVersion)" />
+  </ItemGroup>
+
+</Project>
