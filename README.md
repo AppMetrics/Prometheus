@@ -1,9 +1,9 @@
-# App Metrics Prometheus <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
+# App Metrics Prometheus <img src="https://avatars0.githubusercontent.com/u/29864085?v=4&s=200" alt="App Metrics" width="50px"/> 
 [![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/reporting/prometheus.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is it?
 
-This repo contains Prometheus extension packages to [App Metrics](https://github.com/alhardy/AppMetrics).
+This repo contains Prometheus extension packages to [App Metrics](https://github.com/AppMetrics/AppMetrics).
 
 ## Latest Builds, Packages & Repo Stats
 
@@ -14,11 +14,11 @@ This repo contains Prometheus extension packages to [App Metrics](https://github
 
 |Package|Dev Release|PreRelease|Latest Release|
 |------|:--------:|:--------:|:--------:|
-|App.Metrics.AspNetCore.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.AspNetCore.Formatters.Prometheus.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.AspNetCore.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.AspNetCore.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.AspNetCore.Formatters.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.AspNetCore.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.AspNetCore.Formatters.Prometheus/)
+|App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
 
 #### Grafana/Prometheus Web Monitoring
 
-![Grafana/Prometheus Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+![Grafana/Prometheus Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
 > Grab the dashboard [here](https://grafana.com/dashboards/2204)
 
@@ -38,8 +38,7 @@ scrape_configs:
 ```
 
 - Download and install [Grafana](https://grafana.com/grafana/download), then create a new [Prometheus Datasource](http://docs.grafana.org/features/datasources/prometheus/) pointing the the Database just created and [import](http://docs.grafana.org/reference/export_import/#importing-a-dashboard) App.Metrics [web dashboard](https://grafana.com/dashboards/2204)
-- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Formatters.Prometheus` nuget packages into your web application. 
-- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, instead of the JSON serialization add [Prometheus serialization](http://app-metrics.io/web-application-monitoring/formatters/prometheus-formatter.html). *You might want to check out the [Sandbox](https://github.com/AppMetrics/Prometheus/tree/dev/sandbox/App.Metrics.Prometheus.Sandbox) project if you get stuck*
+- See the [docs](https://www.app-metrics.io/reporting/reporters/prometheus/#asp-net-core-configuration) on configuring Prometheus with App Metrics
 - Run your app and Grafana at visit `http://localhost:3000`
 
 ## How to build
@@ -87,7 +86,7 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 
 ## Contributing
 
-See the [contribution guidlines](https://github.com/alhardy/AppMetrics/blob/master/CONTRIBUTING.md) in the [main repo](https://github.com/alhardy/AppMetrics) for details.
+See the [contribution guidlines](https://github.com/AppMetrics/AppMetrics/blob/master/CONTRIBUTING.md) in the [main repo](https://github.com/AppMetrics/AppMetrics) for details.
 
 ## Acknowledgements
 
