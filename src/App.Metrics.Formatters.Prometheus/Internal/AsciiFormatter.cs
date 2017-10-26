@@ -2,6 +2,7 @@
 // Copyright (c) Allan Hardy. All rights reserved.
 // </copyright>
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -25,13 +26,13 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        internal static string Format(IEnumerable<MetricFamily> metrics)
+        internal static string Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
             var metricFamilys = metrics.ToArray();
             var s = new StringBuilder();
             foreach (var metricFamily in metricFamilys)
             {
-                s.Append(WriteFamily(metricFamily));
+                s.Append(WriteFamily(metricFamily, newLine));
             }
 
             return s.ToString();
@@ -47,14 +48,14 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static string WriteFamily(MetricFamily metricFamily)
+        private static string WriteFamily(MetricFamily metricFamily, NewLineFormat newLine)
         {
             var s = new StringBuilder();
-            s.AppendLine(string.Format("# HELP {0} {1}", metricFamily.name, metricFamily.help));
-            s.AppendLine(string.Format("# TYPE {0} {1}", metricFamily.name, metricFamily.type));
+            s.Append(string.Format("# HELP {0} {1}", metricFamily.name, metricFamily.help), newLine);
+            s.Append(string.Format("# TYPE {0} {1}", metricFamily.name, metricFamily.type), newLine);
             foreach (var metric in metricFamily.metric)
             {
-                s.AppendLine(WriteMetric(metricFamily, metric));
+                s.Append(WriteMetric(metricFamily, metric, newLine), newLine);
             }
 
             return s.ToString();
@@ -110,49 +111,49 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static string WriteMetric(MetricFamily family, Metric metric)
+        private static string WriteMetric(MetricFamily family, Metric metric, NewLineFormat newLine)
         {
             var s = new StringBuilder();
             var familyName = family.name;
 
             if (metric.gauge != null)
             {
-                s.AppendLine(SimpleValue(familyName, metric.gauge.value, metric.label));
+                s.Append(SimpleValue(familyName, metric.gauge.value, metric.label), newLine);
             }
             else if (metric.counter != null)
             {
-                s.AppendLine(SimpleValue(familyName, metric.counter.value, metric.label));
+                s.Append(SimpleValue(familyName, metric.counter.value, metric.label), newLine);
             }
             else if (metric.summary != null)
             {
-                s.AppendLine(SimpleValue(familyName, metric.summary.sample_sum, metric.label, "_sum"));
-                s.AppendLine(SimpleValue(familyName, metric.summary.sample_count, metric.label, "_count"));
+                s.Append(SimpleValue(familyName, metric.summary.sample_sum, metric.label, "_sum"), newLine);
+                s.Append(SimpleValue(familyName, metric.summary.sample_count, metric.label, "_count"), newLine);
 
                 foreach (var quantileValuePair in metric.summary.quantile)
                 {
                     var quantile = double.IsPositiveInfinity(quantileValuePair.quantile)
                         ? "+Inf"
                         : quantileValuePair.quantile.ToString(CultureInfo.InvariantCulture);
-                    s.AppendLine(
+                    s.Append(
                         SimpleValue(
                             familyName,
                             quantileValuePair.value,
-                            metric.label.Concat(new[] { new LabelPair { name = "quantile", value = quantile } })));
+                            metric.label.Concat(new[] { new LabelPair { name = "quantile", value = quantile } })), newLine);
                 }
             }
             else if (metric.histogram != null)
             {
-                s.AppendLine(SimpleValue(familyName, metric.histogram.sample_sum, metric.label, "_sum"));
-                s.AppendLine(SimpleValue(familyName, metric.histogram.sample_count, metric.label, "_count"));
+                s.Append(SimpleValue(familyName, metric.histogram.sample_sum, metric.label, "_sum"), newLine);
+                s.Append(SimpleValue(familyName, metric.histogram.sample_count, metric.label, "_count"), newLine);
                 foreach (var bucket in metric.histogram.bucket)
                 {
                     var value = double.IsPositiveInfinity(bucket.upper_bound) ? "+Inf" : bucket.upper_bound.ToString(CultureInfo.InvariantCulture);
-                    s.AppendLine(
+                    s.Append(
                         SimpleValue(
                             familyName,
                             bucket.cumulative_count,
                             metric.label.Concat(new[] { new LabelPair { name = "le", value = value } }),
-                            "_bucket"));
+                            "_bucket"), newLine);
                 }
             }
             else
@@ -178,6 +179,24 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         private static string SimpleValue(string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
         {
             return string.Format("{0} {1}", WithLabels(family + (namePostfix ?? string.Empty), labels), value.ToString(CultureInfo.InvariantCulture));
+        }
+
+        private static void Append(this StringBuilder sb, string line, NewLineFormat newLine)
+        {
+            switch (newLine)
+            {
+                case NewLineFormat.Auto:
+                    sb.Append(line + Environment.NewLine);
+                    break;
+                case NewLineFormat.Windows:
+                    sb.Append(line + "\r\n");
+                    break;
+                case NewLineFormat.Unix:
+                    sb.Append(line + "\n");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(newLine), newLine, null);
+            }
         }
     }
 }

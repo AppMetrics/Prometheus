@@ -18,5 +18,7 @@ namespace App.Metrics.Formatters.Prometheus
         }
 
         public Func<string, string, string> MetricNameFormatter { get; set; }
+
+        public NewLineFormat NewLineFormat { get; set; } = NewLineFormat.Auto;
     }
 }

@@ -38,7 +38,7 @@ namespace App.Metrics.Formatters.Prometheus
 
             using (var streamWriter = new StreamWriter(output))
             {
-                return streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter)));
+                return streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter), _options.NewLineFormat));
             }
         }
     }
