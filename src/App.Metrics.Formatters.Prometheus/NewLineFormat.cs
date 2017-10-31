@@ -10,6 +10,11 @@ namespace App.Metrics.Formatters.Prometheus
     public enum NewLineFormat
     {
         /// <summary>
+        /// Use Unix style new line character by default
+        /// </summary>
+        Default,
+
+        /// <summary>
         /// Use Environement.NewLine as new line character
         /// </summary>
         Auto,

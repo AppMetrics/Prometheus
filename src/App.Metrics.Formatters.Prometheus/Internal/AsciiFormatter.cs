@@ -28,11 +28,12 @@ namespace App.Metrics.Formatters.Prometheus.Internal
 
         internal static string Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
+            var newLineChar = GetNewLineChar(newLine);
             var metricFamilys = metrics.ToArray();
             var s = new StringBuilder();
             foreach (var metricFamily in metricFamilys)
             {
-                s.Append(WriteFamily(metricFamily, newLine));
+                s.Append(WriteFamily(metricFamily, newLineChar));
             }
 
             return s.ToString();
@@ -48,7 +49,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static string WriteFamily(MetricFamily metricFamily, NewLineFormat newLine)
+        private static string WriteFamily(MetricFamily metricFamily, string newLine)
         {
             var s = new StringBuilder();
             s.Append(string.Format("# HELP {0} {1}", metricFamily.name, metricFamily.help), newLine);
@@ -111,7 +112,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static string WriteMetric(MetricFamily family, Metric metric, NewLineFormat newLine)
+        private static string WriteMetric(MetricFamily family, Metric metric, string newLine)
         {
             var s = new StringBuilder();
             var familyName = family.name;
@@ -181,22 +182,25 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             return string.Format("{0} {1}", WithLabels(family + (namePostfix ?? string.Empty), labels), value.ToString(CultureInfo.InvariantCulture));
         }
 
-        private static void Append(this StringBuilder sb, string line, NewLineFormat newLine)
+        private static string GetNewLineChar(NewLineFormat newLine)
         {
             switch (newLine)
             {
                 case NewLineFormat.Auto:
-                    sb.Append(line + Environment.NewLine);
-                    break;
+                    return Environment.NewLine;
                 case NewLineFormat.Windows:
-                    sb.Append(line + "\r\n");
-                    break;
+                    return "\r\n";
                 case NewLineFormat.Unix:
-                    sb.Append(line + "\n");
-                    break;
+                case NewLineFormat.Default:
+                    return "\n";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(newLine), newLine, null);
             }
+        }
+
+        private static void Append(this StringBuilder sb, string line, string newLineChar)
+        {
+            sb.Append(line + newLineChar);
         }
     }
 }
