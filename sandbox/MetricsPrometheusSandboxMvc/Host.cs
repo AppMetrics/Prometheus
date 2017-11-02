@@ -4,6 +4,7 @@
 
 using App.Metrics;
 using App.Metrics.AspNetCore;
+using App.Metrics.Formatters;
 using App.Metrics.Formatters.Prometheus;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -14,25 +15,26 @@ namespace MetricsPrometheusSandboxMvc
 {
     public static class Host
     {
+        public static IMetricsRoot Metrics { get; set; }
+
         public static IWebHost BuildWebHost(string[] args)
         {
             ConfigureLogging();
 
+            Metrics = AppMetrics.CreateDefaultBuilder()
+                .OutputMetrics.AsPrometheusPlainText()
+                .OutputMetrics.AsPrometheusProtobuf()
+                .Build();
+
             return WebHost.CreateDefaultBuilder(args)
-                          .ConfigureMetricsWithDefaults(
-                              builder =>
-                              {
-                                  builder.OutputMetrics.AsPrometheusPlainText();
-                                  builder.OutputMetrics.AsPrometheusProtobuf();
-                              })
+                          .ConfigureMetrics(Metrics)
                           .UseMetrics(
                               options =>
                               {
                                   options.EndpointOptions = endpointsOptions =>
                                   {
-                                      // TODO: provide an easier way?
-                                      endpointsOptions.MetricsTextEndpointOutputFormatter = new MetricsPrometheusTextOutputFormatter();
-                                      endpointsOptions.MetricsEndpointOutputFormatter = new MetricsPrometheusProtobufOutputFormatter();
+                                      endpointsOptions.MetricsTextEndpointOutputFormatter = Metrics.OutputMetricsFormatters.GetType<MetricsPrometheusTextOutputFormatter>();
+                                      endpointsOptions.MetricsEndpointOutputFormatter = Metrics.OutputMetricsFormatters.GetType<MetricsPrometheusProtobufOutputFormatter>();
                                   };
                               })
                           .UseSerilog()
