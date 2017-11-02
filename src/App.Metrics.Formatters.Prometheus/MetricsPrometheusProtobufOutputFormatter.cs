@@ -26,7 +26,7 @@ namespace App.Metrics.Formatters.Prometheus
         public MetricsPrometheusProtobufOutputFormatter(MetricsPrometheusOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
 
         /// <inheritdoc/>
-        public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.prometheus", "v1", "plain");
+        public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics.prometheus", "v1", "vnd.google.protobuf; proto=io.prometheus.client.MetricFamily; encoding=delimited");
 
         /// <inheritdoc/>
         public Task WriteAsync(
@@ -39,16 +39,8 @@ namespace App.Metrics.Formatters.Prometheus
                 throw new ArgumentNullException(nameof(output));
             }
 
-            using (var writer = new BinaryWriter(output))
-            {
-                writer.Write(ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter)));
-            }
-
-#if !NETSTANDARD1_6
-            return AppMetricsTaskHelper.CompletedTask();
-#else
-            return Task.CompletedTask;
-#endif
+            var bodyData = ProtoFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter));
+            return output.WriteAsync(bodyData, 0, bodyData.Length, cancellationToken);
         }
     }
 }
