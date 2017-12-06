@@ -130,7 +130,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                              {
                                  summary = new Summary
                                            {
-                                               sample_count = (ulong)rescaledVal.Histogram.Count,
+                                               sample_count = (ulong)rescaledVal.Rate.Count,
                                                sample_sum = rescaledVal.Histogram.Sum,
                                                quantile =
                                                {
