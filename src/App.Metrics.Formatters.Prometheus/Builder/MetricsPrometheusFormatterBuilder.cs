@@ -18,6 +18,31 @@ namespace App.Metrics
         ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure Prometheus formatting
         ///     options.
         /// </param>
+        /// <param name="options">The Prometheus formatting options to use.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        public static IMetricsBuilder AsPrometheusPlainText(
+            this IMetricsOutputFormattingBuilder metricFormattingBuilder,
+            MetricsPrometheusOptions options)
+        {
+            if (metricFormattingBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(metricFormattingBuilder));
+            }
+
+            var formatter = new MetricsPrometheusTextOutputFormatter(options);
+
+            return metricFormattingBuilder.Using(formatter, false);
+        }
+
+        /// <summary>
+        ///     Add the <see cref="MetricsPrometheusFormatterBuilder" /> allowing metrics to optionally be formatted in Prometheus plain text format
+        /// </summary>
+        /// <param name="metricFormattingBuilder">s
+        ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure Prometheus formatting
+        ///     options.
+        /// </param>
         /// <param name="setupAction">The Prometheus formatting options to use.</param>
         /// <returns>
         ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
@@ -64,6 +89,31 @@ namespace App.Metrics
             }
 
             var formatter = new MetricsPrometheusTextOutputFormatter();
+
+            return metricFormattingBuilder.Using(formatter, false);
+        }
+
+        /// <summary>
+        ///     Add the <see cref="MetricsPrometheusFormatterBuilder" /> allowing metrics to optionally be formatted in Prometheus protobuf format
+        /// </summary>
+        /// <param name="metricFormattingBuilder">s
+        ///     The <see cref="IMetricsOutputFormattingBuilder" /> used to configure Prometheus formatting
+        ///     options.
+        /// </param>
+        /// <param name="options">The Prometheus formatting options to use.</param>
+        /// <returns>
+        ///     An <see cref="IMetricsBuilder" /> that can be used to further configure App Metrics.
+        /// </returns>
+        public static IMetricsBuilder AsPrometheusProtobuf(
+            this IMetricsOutputFormattingBuilder metricFormattingBuilder,
+            MetricsPrometheusOptions options)
+        {
+            if (metricFormattingBuilder == null)
+            {
+                throw new ArgumentNullException(nameof(metricFormattingBuilder));
+            }
+
+            var formatter = new MetricsPrometheusProtobufOutputFormatter(options);
 
             return metricFormattingBuilder.Using(formatter, false);
         }
