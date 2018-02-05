@@ -39,6 +39,7 @@ namespace MetricsPrometheusSandboxMvc
                               })
                           .UseSerilog()
                           .UseStartup<Startup>()
+                          .UseUrls("http://localhost:1111")
                           .Build();
         }
 
