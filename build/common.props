@@ -1,0 +1,39 @@
+<Project>
+  <Import Project="dependencies.props" />
+  <Import Project="..\version.props" />
+  
+	<PropertyGroup>
+    <Product>App Metrics</Product>
+		<Copyright>Allan Hardy 2016</Copyright>
+		<Authors>Allan Hardy;Sergii Kryvonos</Authors>
+		<NoWarn>$(NoWarn);1701;1702;1705;CS1591;CS1570</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIconUrl>https://app-metrics.io/images/logo.png</PackageIconUrl>		
+		<PackageProjectUrl>https://www.app-metrics.io/reporting/reporters/prometheus/</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/AppMetrics/Prometheus/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>git://github.com/AppMetrics/Prometheus</RepositoryUrl>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+		<GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+		<CodeAnalysisRuleSet>..\..\AppMetrics.ruleset</CodeAnalysisRuleSet>
+	  <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Key.snk</AssemblyOriginatorKeyFile>
+	  <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+	  <PublicSign Condition="'$(OS)' != 'Windows_NT'">true</PublicSign>
+      <DebugType>embedded</DebugType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />		
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="StyleCop.Analyzers" Version="1.0.0">
+		  <PrivateAssets>All</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+  
+</Project>

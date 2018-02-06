@@ -1,24 +1,24 @@
-# App Metrics Prometheus Extensions <img src="http://app-metrics.io/logo.png" alt="App Metrics" width="50px"/> 
+# App Metrics Prometheus <img src="https://avatars0.githubusercontent.com/u/29864085?v=4&s=200" alt="App Metrics" width="50px"/> 
 [![Official Site](https://img.shields.io/badge/site-appmetrics-blue.svg?style=flat-square)](http://app-metrics.io/reporting/prometheus.html) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 ## What is it?
 
-The repo contains Prometheus extension packages to [App Metrics](https://github.com/alhardy/AppMetrics).
+This repo contains Prometheus extension packages to [App Metrics](https://github.com/AppMetrics/AppMetrics).
 
 ## Latest Builds, Packages & Repo Stats
 
 |Branch|AppVeyor|Travis|Coverage|
 |------|:--------:|:--------:|:--------:|
-|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/appmetrics-extensions-prometheus/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/AppMetrics.Extensions.Prometheus/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus)|[![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics.Extensions.Prometheus/dev.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics.Extensions.Prometheus?branch=dev)
-|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/appmetrics-extensions-prometheus/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/AppMetrics.Extensions.Prometheus/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus)| [![Coveralls](https://img.shields.io/coveralls/alhardy/AppMetrics.Extensions.Prometheus/master.svg?style=flat-square)](https://coveralls.io/github/alhardy/AppMetrics.Extensions.Prometheus?branch=master)|
+|dev|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/prometheus/dev.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/prometheus/branch/dev)|[![Travis](https://img.shields.io/travis/alhardy/Prometheus/dev.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/Prometheus)|[![Coveralls](https://img.shields.io/coveralls/AppMetrics/Prometheus/dev.svg?style=flat-square)](https://coveralls.io/github/AppMetrics/Prometheus?branch=dev)
+|master|[![AppVeyor](https://img.shields.io/appveyor/ci/alhardy/prometheus/master.svg?style=flat-square&label=appveyor%20build)](https://ci.appveyor.com/project/alhardy/prometheus/branch/master)| [![Travis](https://img.shields.io/travis/alhardy/Prometheus/master.svg?style=flat-square&label=travis%20build)](https://travis-ci.org/alhardy/Prometheus)| [![Coveralls](https://img.shields.io/coveralls/AppMetrics/Prometheus/master.svg?style=flat-square)](https://coveralls.io/github/AppMetrics/Prometheus?branch=master)|
 
-|Package|Dev Release|Pre-Release|Release|
+|Package|Dev Release|PreRelease|Latest Release|
 |------|:--------:|:--------:|:--------:|
-|App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/alhardy/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.myget.org/feed/alhardy/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
+|App.Metrics.Formatters.Prometheus|[![MyGet Status](https://img.shields.io/myget/appmetrics/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.myget.org/feed/appmetrics/package/nuget/App.Metrics.Formatters.Prometheus)|[![NuGet Status](https://img.shields.io/nuget/vpre/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)|[![NuGet Status](https://img.shields.io/nuget/v/App.Metrics.Formatters.Prometheus.svg?style=flat-square)](https://www.nuget.org/packages/App.Metrics.Formatters.Prometheus/)
 
 #### Grafana/Prometheus Web Monitoring
 
-![Grafana/Prometheus Generic Web Dashboard Demo](https://github.com/alhardy/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
+![Grafana/Prometheus Generic Web Dashboard Demo](https://github.com/AppMetrics/AppMetrics.DocFx/blob/master/images/generic_grafana_dashboard_demo.gif)
 
 > Grab the dashboard [here](https://grafana.com/dashboards/2204)
 
@@ -38,13 +38,12 @@ scrape_configs:
 ```
 
 - Download and install [Grafana](https://grafana.com/grafana/download), then create a new [Prometheus Datasource](http://docs.grafana.org/features/datasources/prometheus/) pointing the the Database just created and [import](http://docs.grafana.org/reference/export_import/#importing-a-dashboard) App.Metrics [web dashboard](https://grafana.com/dashboards/2204)
-- Drop in the `App.Metrics.Extensions.Mvc` and `App.Metrics.Formatters.Prometheus` nuget packages into your web application. 
-- Add [App.Metrics configuration](https://alhardy.github.io/app-metrics-docs/getting-started/fundamentals/middleware-configuration.html) to the `Startup.cs` of your web application, instead of the JSON serialization add [Prometheus serialization](http://app-metrics.io/web-application-monitoring/formatters/prometheus-formatter.html). *You might want to check out the [Sandbox](https://github.com/alhardy/AppMetrics.Extensions.Prometheus/tree/dev/sandbox/App.Metrics.Prometheus.Sandbox) project if you get stuck*
+- See the [docs](https://www.app-metrics.io/reporting/reporters/prometheus/#asp-net-core-configuration) on configuring Prometheus with App Metrics
 - Run your app and Grafana at visit `http://localhost:3000`
 
 ## How to build
 
-[AppVeyor](https://ci.appveyor.com/project/alhardy/appmetrics-extensions-prometheus/branch/master) and [Travis CI](https://travis-ci.org/alhardy/AppMetrics.Extensions.Prometheus) builds are triggered on commits and PRs to `dev` and `master` branches.
+[AppVeyor](https://ci.appveyor.com/project/alhardy/prometheus/branch/master) and [Travis CI](https://travis-ci.org/alhardy/Prometheus) builds are triggered on commits and PRs to `dev` and `master` branches.
 
 See the following for build arguments and running locally.
 
@@ -55,6 +54,7 @@ See the following for build arguments and running locally.
 |CoverWith|**DotCover** or **OpenCover** to calculate and report code coverage, **None** to skip. When not **None**, a coverage file and html report will be generated at `./artifacts/coverage`|*OpenCover*|Windows Only|Optional|
 |SkipCodeInspect|**false** to run ReSharper code inspect and report results, **true** to skip. When **true**, the code inspection html report and xml output will be generated at `./artifacts/resharper-reports`|*false*|Windows Only|Optional|
 |BuildNumber|The build number to use for pre-release versions|*0*|All|Optional|
+|LinkSources|[Source link](https://github.com/ctaggart/SourceLink) support allows source code to be downloaded on demand while debugging|*true*|All|Optional|
 
 
 ### Windows
@@ -85,14 +85,9 @@ Run `build.sh` from the repositories root directory. Code Coverage reports are n
 	.\build.sh --ScriptArgs '-BuildConfiguration=Release -PreReleaseSuffix=beta -BuildNumber=1'
 ```
 
-> #### Nuget Packages
-> Nuget packages won't be generated on non-windows environments by default.
-> 
-> Unfortunately there is [currently no way out-of-the-box to conditionally build & pack a project by framework](https://github.com/dotnet/roslyn-project-system/issues/1586#issuecomment-280978851). Because `App.Metrics` packages target `.NET 4.5.2` as well as `dotnet standard` there is a work around in the build script to force `dotnet standard` on build but no work around for packaging on non-windows environments. 
-
 ## Contributing
 
-See the [contribution guidlines](https://github.com/alhardy/AppMetrics/blob/master/CONTRIBUTING.md) in the [main repo](https://github.com/alhardy/AppMetrics) for details.
+See the [contribution guidlines](https://github.com/AppMetrics/AppMetrics/blob/master/CONTRIBUTING.md) in the [main repo](https://github.com/AppMetrics/AppMetrics) for details.
 
 ## Acknowledgements
 
