@@ -26,7 +26,7 @@ namespace App.Metrics.Formatters.Prometheus
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.prometheus", "v1", "plain");
 
         /// <inheritdoc/>
-        public Task WriteAsync(
+        public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -38,7 +38,7 @@ namespace App.Metrics.Formatters.Prometheus
 
             using (var streamWriter = new StreamWriter(output))
             {
-                return streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter), _options.NewLineFormat));
+                await streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter), _options.NewLineFormat));
             }
         }
     }
