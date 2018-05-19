@@ -105,7 +105,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                                sample_sum = metric.Value.Sum,
                                                quantile =
                                                {
-                                                   new Quantile { quantile = 0.5, value = metric.Value.Mean },
+                                                   new Quantile { quantile = 0.5, value = metric.Value.Median },
                                                    new Quantile { quantile = 0.75, value = metric.Value.Percentile75 },
                                                    new Quantile { quantile = 0.95, value = metric.Value.Percentile95 },
                                                    // new Quantile(){quantile = 0.98, value = metric.Value.Percentile98},
@@ -134,7 +134,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                                                sample_sum = rescaledVal.Histogram.Sum,
                                                quantile =
                                                {
-                                                   new Quantile { quantile = 0.5, value = rescaledVal.Histogram.Mean },
+                                                   new Quantile { quantile = 0.5, value = rescaledVal.Histogram.Median },
                                                    new Quantile { quantile = 0.75, value = rescaledVal.Histogram.Percentile75 },
                                                    new Quantile { quantile = 0.95, value = rescaledVal.Histogram.Percentile95 },
                                                    // new Quantile(){quantile = 0.98, value = metric.Value.Histogram.Percentile98},
