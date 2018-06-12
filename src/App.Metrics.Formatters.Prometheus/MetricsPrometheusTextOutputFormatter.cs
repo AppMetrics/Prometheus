@@ -26,10 +26,13 @@ namespace App.Metrics.Formatters.Prometheus
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.prometheus", "v1", "plain");
 
         /// <inheritdoc/>
+        public MetricFields MetricFields { get; set; }
+
+        /// <inheritdoc/>
         public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (output == null)
             {

@@ -29,6 +29,9 @@ namespace App.Metrics.Formatters.Prometheus
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics.prometheus", "v1", "vnd.google.protobuf; proto=io.prometheus.client.MetricFamily; encoding=delimited");
 
         /// <inheritdoc/>
+        public MetricFields MetricFields { get; set; }
+
+        /// <inheritdoc/>
         public Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
