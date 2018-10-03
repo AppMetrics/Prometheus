@@ -42,7 +42,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         private static void WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
         {
             streamWriter.WriteLine("# HELP {0} {1}", metricFamily.name, metricFamily.help);
-            streamWriter.WriteLine("# TYPE {0} {1}", metricFamily.name, metricFamily.type);
+            streamWriter.WriteLine("# TYPE {0} {1}", metricFamily.name, metricFamily.type.ToString().ToLowerInvariant());
             foreach (var metric in metricFamily.metric)
             {
                 WriteMetric(streamWriter, metricFamily, metric);
@@ -53,7 +53,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal
         {
             var s = new StringBuilder();
             s.Append(string.Format("# HELP {0} {1}", metricFamily.name, metricFamily.help), newLine);
-            s.Append(string.Format("# TYPE {0} {1}", metricFamily.name, metricFamily.type), newLine);
+            s.Append(string.Format("# TYPE {0} {1}", metricFamily.name, metricFamily.type.ToString().ToLowerInvariant()), newLine);
             foreach (var metric in metricFamily.metric)
             {
                 s.Append(WriteMetric(metricFamily, metric, newLine), newLine);
