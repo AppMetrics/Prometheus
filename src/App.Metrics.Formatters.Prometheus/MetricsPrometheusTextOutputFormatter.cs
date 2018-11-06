@@ -16,11 +16,14 @@ namespace App.Metrics.Formatters.Prometheus
         private readonly MetricsPrometheusOptions _options;
 
         public MetricsPrometheusTextOutputFormatter()
+            : this(new MetricsPrometheusOptions())
         {
-            _options = new MetricsPrometheusOptions();
         }
 
-        public MetricsPrometheusTextOutputFormatter(MetricsPrometheusOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
+        public MetricsPrometheusTextOutputFormatter(MetricsPrometheusOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
         /// <inheritdoc/>
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.prometheus", "v1", "plain");
@@ -32,17 +35,16 @@ namespace App.Metrics.Formatters.Prometheus
         public async Task WriteAsync(
             Stream output,
             MetricsDataValueSource metricsData,
-            CancellationToken cancellationToken = default)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (output == null)
             {
                 throw new ArgumentNullException(nameof(output));
             }
 
-            using (var streamWriter = new StreamWriter(output))
-            {
-                await streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter), _options.NewLineFormat));
-            }
+            var prometheusMetricsSnapshot = metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter);
+
+            await AsciiFormatter.Write(output, prometheusMetricsSnapshot, _options.NewLineFormat);
         }
     }
 }
