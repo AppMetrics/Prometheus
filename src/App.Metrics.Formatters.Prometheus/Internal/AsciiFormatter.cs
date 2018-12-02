@@ -1,5 +1,5 @@
-﻿// <copyright file="AsciiFormatter.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="AsciiFormatter.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -8,58 +8,55 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace App.Metrics.Formatters.Prometheus.Internal
 {
     internal static class AsciiFormatter
     {
-        public static void Format(Stream destination, IEnumerable<MetricFamily> metrics)
+        private static readonly UTF8Encoding Encoding = new UTF8Encoding(false);
+
+        public static async Task<string> Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
-            var metricFamilys = metrics.ToArray();
-            using (var streamWriter = new StreamWriter(destination, Encoding.UTF8))
+            using (var memoryStream = new MemoryStream())
             {
-                streamWriter.NewLine = "\n";
-                foreach (var metricFamily in metricFamilys)
-                {
-                    WriteFamily(streamWriter, metricFamily);
-                }
+                await Write(memoryStream, metrics, newLine);
+
+                return Encoding.GetString(memoryStream.ToArray());
             }
         }
 
-        internal static string Format(IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
+        public static async Task Write(Stream destination, IEnumerable<MetricFamily> metrics, NewLineFormat newLine)
         {
-            var newLineChar = GetNewLineChar(newLine);
-            var metricFamilys = metrics.ToArray();
-            var s = new StringBuilder();
-            foreach (var metricFamily in metricFamilys)
+            var metricFamilies = metrics.ToArray();
+            using (var streamWriter = new StreamWriter(destination, Encoding) { NewLine = GetNewLineChar(newLine) })
             {
-                s.Append(WriteFamily(metricFamily, newLineChar));
-            }
+                foreach (var metricFamily in metricFamilies)
+                {
+                    WriteFamily(streamWriter, metricFamily);
+                }
 
-            return s.ToString();
+                await streamWriter.FlushAsync();
+            }
         }
 
         private static void WriteFamily(StreamWriter streamWriter, MetricFamily metricFamily)
         {
-            streamWriter.WriteLine("# HELP {0} {1}", metricFamily.name, metricFamily.help);
-            streamWriter.WriteLine("# TYPE {0} {1}", metricFamily.name, metricFamily.type);
+            streamWriter.Write("# HELP ");
+            streamWriter.Write(metricFamily.name);
+            streamWriter.Write(' ');
+            streamWriter.WriteLine(metricFamily.help);
+
+            streamWriter.Write("# TYPE ");
+            streamWriter.Write(metricFamily.name);
+            streamWriter.Write(' ');
+            streamWriter.WriteLine(ToString(metricFamily.type));
+
             foreach (var metric in metricFamily.metric)
             {
                 WriteMetric(streamWriter, metricFamily, metric);
+                streamWriter.WriteLine();
             }
-        }
-
-        private static string WriteFamily(MetricFamily metricFamily, string newLine)
-        {
-            var s = new StringBuilder();
-            s.Append(string.Format("# HELP {0} {1}", metricFamily.name, metricFamily.help), newLine);
-            s.Append(string.Format("# TYPE {0} {1}", metricFamily.name, metricFamily.type), newLine);
-            foreach (var metric in metricFamily.metric)
-            {
-                s.Append(WriteMetric(metricFamily, metric, newLine), newLine);
-            }
-
-            return s.ToString();
         }
 
         private static void WriteMetric(StreamWriter streamWriter, MetricFamily family, Metric metric)
@@ -68,42 +65,42 @@ namespace App.Metrics.Formatters.Prometheus.Internal
 
             if (metric.gauge != null)
             {
-                streamWriter.WriteLine(SimpleValue(familyName, metric.gauge.value, metric.label));
+                WriteSimpleValue(streamWriter, familyName, metric.gauge.value, metric.label);
             }
             else if (metric.counter != null)
             {
-                streamWriter.WriteLine(SimpleValue(familyName, metric.counter.value, metric.label));
+                WriteSimpleValue(streamWriter, familyName, metric.counter.value, metric.label);
             }
             else if (metric.summary != null)
             {
-                streamWriter.WriteLine(SimpleValue(familyName, metric.summary.sample_sum, metric.label, "_sum"));
-                streamWriter.WriteLine(SimpleValue(familyName, metric.summary.sample_count, metric.label, "_count"));
+                WriteSimpleValue(streamWriter, familyName, metric.summary.sample_sum, metric.label, "_sum");
+                WriteSimpleValue(streamWriter, familyName, metric.summary.sample_count, metric.label, "_count");
 
                 foreach (var quantileValuePair in metric.summary.quantile)
                 {
-                    var quantile = double.IsPositiveInfinity(quantileValuePair.quantile)
-                        ? "+Inf"
-                        : quantileValuePair.quantile.ToString(CultureInfo.InvariantCulture);
-                    streamWriter.WriteLine(
-                        SimpleValue(
-                            familyName,
-                            quantileValuePair.value,
-                            metric.label.Concat(new[] { new LabelPair { name = "quantile", value = quantile } })));
+                    var quantile = double.IsPositiveInfinity(quantileValuePair.quantile) ? "+Inf" : quantileValuePair.quantile.ToString(CultureInfo.InvariantCulture);
+
+                    WriteSimpleValue(
+                        streamWriter,
+                        familyName,
+                        quantileValuePair.value,
+                        metric.label.Concat(new[] { new LabelPair { name = "quantile", value = quantile } }));
                 }
             }
             else if (metric.histogram != null)
             {
-                streamWriter.WriteLine(SimpleValue(familyName, metric.histogram.sample_sum, metric.label, "_sum"));
-                streamWriter.WriteLine(SimpleValue(familyName, metric.histogram.sample_count, metric.label, "_count"));
+                WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_sum, metric.label, "_sum");
+                WriteSimpleValue(streamWriter, familyName, metric.histogram.sample_count, metric.label, "_count");
                 foreach (var bucket in metric.histogram.bucket)
                 {
                     var value = double.IsPositiveInfinity(bucket.upper_bound) ? "+Inf" : bucket.upper_bound.ToString(CultureInfo.InvariantCulture);
-                    streamWriter.WriteLine(
-                        SimpleValue(
-                            familyName,
-                            bucket.cumulative_count,
-                            metric.label.Concat(new[] { new LabelPair { name = "le", value = value } }),
-                            "_bucket"));
+
+                    WriteSimpleValue(
+                        streamWriter,
+                        familyName,
+                        bucket.cumulative_count,
+                        metric.label.Concat(new[] { new LabelPair { name = "le", value = value } }),
+                        "_bucket");
                 }
             }
             else
@@ -112,74 +109,34 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static string WriteMetric(MetricFamily family, Metric metric, string newLine)
+        private static void WriteSimpleValue(StreamWriter writer, string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
         {
-            var s = new StringBuilder();
-            var familyName = family.name;
-
-            if (metric.gauge != null)
+            writer.Write(family);
+            if (namePostfix != null)
             {
-                s.Append(SimpleValue(familyName, metric.gauge.value, metric.label), newLine);
-            }
-            else if (metric.counter != null)
-            {
-                s.Append(SimpleValue(familyName, metric.counter.value, metric.label), newLine);
-            }
-            else if (metric.summary != null)
-            {
-                s.Append(SimpleValue(familyName, metric.summary.sample_sum, metric.label, "_sum"), newLine);
-                s.Append(SimpleValue(familyName, metric.summary.sample_count, metric.label, "_count"), newLine);
-
-                foreach (var quantileValuePair in metric.summary.quantile)
-                {
-                    var quantile = double.IsPositiveInfinity(quantileValuePair.quantile)
-                        ? "+Inf"
-                        : quantileValuePair.quantile.ToString(CultureInfo.InvariantCulture);
-                    s.Append(
-                        SimpleValue(
-                            familyName,
-                            quantileValuePair.value,
-                            metric.label.Concat(new[] { new LabelPair { name = "quantile", value = quantile } })), newLine);
-                }
-            }
-            else if (metric.histogram != null)
-            {
-                s.Append(SimpleValue(familyName, metric.histogram.sample_sum, metric.label, "_sum"), newLine);
-                s.Append(SimpleValue(familyName, metric.histogram.sample_count, metric.label, "_count"), newLine);
-                foreach (var bucket in metric.histogram.bucket)
-                {
-                    var value = double.IsPositiveInfinity(bucket.upper_bound) ? "+Inf" : bucket.upper_bound.ToString(CultureInfo.InvariantCulture);
-                    s.Append(
-                        SimpleValue(
-                            familyName,
-                            bucket.cumulative_count,
-                            metric.label.Concat(new[] { new LabelPair { name = "le", value = value } }),
-                            "_bucket"), newLine);
-                }
-            }
-            else
-            {
-                // not supported
+                writer.Write(namePostfix);
             }
 
-            return s.ToString();
-        }
-
-        private static string WithLabels(string familyName, IEnumerable<LabelPair> labels)
-        {
-            var labelPairs = labels as LabelPair[] ?? labels.ToArray();
-
-            if (labelPairs.Length == 0)
+            bool any = false;
+            foreach (var l in labels)
             {
-                return familyName;
+                writer.Write(any ? ',' : '{');
+
+                writer.Write(l.name);
+                writer.Write("=\"");
+                writer.Write(l.value);
+                writer.Write('"');
+
+                any = true;
             }
 
-            return string.Format("{0}{{{1}}}", familyName, string.Join(",", labelPairs.Select(l => string.Format("{0}=\"{1}\"", l.name, l.value))));
-        }
+            if (any)
+            {
+                writer.Write('}');
+            }
 
-        private static string SimpleValue(string family, double value, IEnumerable<LabelPair> labels, string namePostfix = null)
-        {
-            return string.Format("{0} {1}", WithLabels(family + (namePostfix ?? string.Empty), labels), value.ToString(CultureInfo.InvariantCulture));
+            writer.Write(' ');
+            writer.WriteLine(value.ToString(CultureInfo.InvariantCulture));
         }
 
         private static string GetNewLineChar(NewLineFormat newLine)
@@ -198,9 +155,23 @@ namespace App.Metrics.Formatters.Prometheus.Internal
             }
         }
 
-        private static void Append(this StringBuilder sb, string line, string newLineChar)
+        private static string ToString(MetricType type)
         {
-            sb.Append(line + newLineChar);
+            switch (type)
+            {
+                case MetricType.COUNTER:
+                    return "counter";
+                case MetricType.GAUGE:
+                    return "gauge";
+                case MetricType.SUMMARY:
+                    return "summary";
+                case MetricType.UNTYPED:
+                    return "untyped";
+                case MetricType.HISTOGRAM:
+                    return "histogram";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
     }
 }

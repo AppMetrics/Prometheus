@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsPrometheusProtobufOutputFormatter.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsPrometheusProtobufOutputFormatter.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -27,6 +27,9 @@ namespace App.Metrics.Formatters.Prometheus
 
         /// <inheritdoc/>
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("application", "vnd.appmetrics.metrics.prometheus", "v1", "vnd.google.protobuf; proto=io.prometheus.client.MetricFamily; encoding=delimited");
+
+        /// <inheritdoc/>
+        public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc/>
         public Task WriteAsync(

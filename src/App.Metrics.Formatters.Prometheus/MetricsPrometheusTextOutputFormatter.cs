@@ -1,5 +1,5 @@
-﻿// <copyright file="MetricsPrometheusTextOutputFormatter.cs" company="Allan Hardy">
-// Copyright (c) Allan Hardy. All rights reserved.
+﻿// <copyright file="MetricsPrometheusTextOutputFormatter.cs" company="App Metrics Contributors">
+// Copyright (c) App Metrics Contributors. All rights reserved.
 // </copyright>
 
 using System;
@@ -16,14 +16,20 @@ namespace App.Metrics.Formatters.Prometheus
         private readonly MetricsPrometheusOptions _options;
 
         public MetricsPrometheusTextOutputFormatter()
+            : this(new MetricsPrometheusOptions())
         {
-            _options = new MetricsPrometheusOptions();
         }
 
-        public MetricsPrometheusTextOutputFormatter(MetricsPrometheusOptions options) { _options = options ?? throw new ArgumentNullException(nameof(options)); }
+        public MetricsPrometheusTextOutputFormatter(MetricsPrometheusOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
         /// <inheritdoc/>
         public MetricsMediaTypeValue MediaType => new MetricsMediaTypeValue("text", "vnd.appmetrics.metrics.prometheus", "v1", "plain");
+
+        /// <inheritdoc/>
+        public MetricFields MetricFields { get; set; }
 
         /// <inheritdoc/>
         public async Task WriteAsync(
@@ -36,10 +42,9 @@ namespace App.Metrics.Formatters.Prometheus
                 throw new ArgumentNullException(nameof(output));
             }
 
-            using (var streamWriter = new StreamWriter(output))
-            {
-                await streamWriter.WriteAsync(AsciiFormatter.Format(metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter), _options.NewLineFormat));
-            }
+            var prometheusMetricsSnapshot = metricsData.GetPrometheusMetricsSnapshot(_options.MetricNameFormatter);
+
+            await AsciiFormatter.Write(output, prometheusMetricsSnapshot, _options.NewLineFormat);
         }
     }
 }
