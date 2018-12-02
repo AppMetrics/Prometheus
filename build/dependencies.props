@@ -2,19 +2,19 @@
   <PropertyGroup>
     <AppMetricsCoreVersion>3.0.0-*</AppMetricsCoreVersion>
     <AppMetricsAspNetCoreVersion>3.0.0-*</AppMetricsAspNetCoreVersion>
-    <AspNetCoreVersion>2.1.1</AspNetCoreVersion>
-    <AspNetCoreMvcVersion>2.1.1</AspNetCoreMvcVersion>
+    <AspNetCoreVersion>2.1.6</AspNetCoreVersion>
+    <AspNetCoreMvcVersion>2.1.3</AspNetCoreMvcVersion>
     <MicrosoftExtensionsVersion>2.1.1</MicrosoftExtensionsVersion>
     <AppMetricsReportingVersion>3.0.0-*</AppMetricsReportingVersion>
     <CoreFxVersion>4.5.0</CoreFxVersion>
     <DependencyModelVersion>2.1.1</DependencyModelVersion>
     <MoqVersion>4.8.3</MoqVersion>
     <NewtonsoftVersion>11.0.2</NewtonsoftVersion>
-    <TestSdkVersion>15.8.0-preview-20180610-02</TestSdkVersion>
-    <XunitVersion>2.4.0-rc.1.build4038</XunitVersion>
+    <TestSdkVersion>15.9.0</TestSdkVersion>
+    <XunitVersion>2.4.1</XunitVersion>
     <FluentAssertionsVersion>5.4.1</FluentAssertionsVersion>
     <FluentAssertionsJsonVersion>5.0.0</FluentAssertionsJsonVersion>
     <StyleCopAnalyzersVersion>1.0.0</StyleCopAnalyzersVersion>
-    <ProtobufNetVersion>2.1.0</ProtobufNetVersion>
+    <ProtobufNetVersion>2.4.0</ProtobufNetVersion>
   </PropertyGroup>
 </Project>
