@@ -57,7 +57,7 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                              {
                                  gauge = new Gauge
                                          {
-                                             value = metric.Value.Count
+                                            value = metric.ValueProvider.GetValue(metric.ResetOnReporting).Count
                                          },
                                  label = metric.Tags.ToLabelPairs()
                              }
