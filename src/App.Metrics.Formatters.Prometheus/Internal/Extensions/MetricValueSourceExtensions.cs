@@ -51,6 +51,14 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
 
         public static IEnumerable<Metric> ToPrometheusMetrics(this CounterValueSource metric)
         {
+            IEnumerable<Metric> items = null;
+
+            // when We Resting counter, we lost Items "Count"
+            if (metric.Value.Items?.Length > 0)
+            {
+                items = metric.Value.Items.Select(i => i.ToPrometheusMetric());
+            }
+
             var result = new List<Metric>
                          {
                              new Metric
@@ -63,9 +71,9 @@ namespace App.Metrics.Formatters.Prometheus.Internal.Extensions
                              }
                          };
 
-            if (metric.Value.Items?.Length > 0)
+            if (metric.Value.Items?.Length > 0 && items != null)
             {
-                result.AddRange(metric.Value.Items.Select(i => i.ToPrometheusMetric()));
+                result.AddRange(items);
             }
 
             return result;
